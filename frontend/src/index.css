@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply overflow-y-scroll;
+}
+
+.custom-container {
+  @apply md:container xl:max-w-5xl mx-auto flex px-12;
+}
+
+.form-container {
+  @apply sm:container lg:max-w-lg xl:max-w-xl flex px-12 mx-auto;
+}
+
+.btn-transition {
+  @apply transition-all ease-in-out duration-100 delay-75;
+}
