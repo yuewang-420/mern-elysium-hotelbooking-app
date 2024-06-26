@@ -1,7 +1,7 @@
 import express from 'express'
 import verifyToken from './../middleware/authMiddleware'
 import multer from 'multer'
-import { addNewHotel } from '../controllers/myHotelController'
+import { addNewHotel, getAllMyHotels } from '../controllers/myHotelController'
 
 const storage = multer.memoryStorage()
 const upload = multer({
@@ -13,7 +13,10 @@ const upload = multer({
 
 const router = express.Router()
 
-// POST     User add new hotel
+//  POST    User add new hotel
 router.post('/', upload, addNewHotel)
+
+//  GET     User get all their hotels
+router.get('/', getAllMyHotels)
 
 export default router

@@ -17,7 +17,7 @@ const NotFound = () => {
           </p>
           <p className="mb-4 text-lg font-light text-neutral-600">
             Sorry, we can't find that page. You'll find lots to explore on the
-            home page.{' '}
+            home page.
           </p>
           <span className="mx-auto flex-1">
             <Button onClick={handleClick}>Back to Homepage</Button>

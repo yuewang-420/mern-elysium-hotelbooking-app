@@ -2,6 +2,7 @@ import { RegFormData } from './pages/user/Register'
 import { SignInFormData } from './pages/user/SignIn'
 import { ForgotPasswordFormData } from './pages/user/ForgotPassword'
 import { UpdateProfileFormData } from './pages/user/PersonalDetails'
+import { HotelType } from '../../backend/src/models/hotelModel'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 
@@ -265,7 +266,9 @@ export const updateProfile = async (data: UpdateProfileFormData) => {
   return body
 }
 
-export const addNewHotel = async (addHotelFormData: FormData) => {
+export const addNewHotel = async (
+  addHotelFormData: FormData
+): Promise<HotelType> => {
   const res = await fetch(`${API_BASE_URL}/api/my-hotels/`, {
     method: 'POST',
     credentials: 'include',
@@ -281,6 +284,21 @@ export const addNewHotel = async (addHotelFormData: FormData) => {
     } else {
       throw new Error(errMessage.join(' '))
     }
+  }
+
+  return body
+}
+
+export const getMyHotels = async (): Promise<HotelType[]> => {
+  const res = await fetch(`${API_BASE_URL}/api/my-hotels/`, {
+    method: 'GET',
+    credentials: 'include',
+  })
+
+  const body = await res.json()
+
+  if (!res.ok) {
+    throw new Error(body.message)
   }
 
   return body

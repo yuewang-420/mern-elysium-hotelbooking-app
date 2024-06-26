@@ -22,7 +22,7 @@ const myHotelRoutesAllowedKeys: { [key: string]: { [key: string]: string[] } } =
         'pricePerNight',
       ],
     },
-    GET: {},
+    GET: { '/': [] },
     PUT: {},
   }
 
@@ -63,9 +63,33 @@ export const addNewHotel = async (req: Request, res: Response) => {
     const hotel = new Hotel(newHotel)
     await hotel.save()
 
-    res.status(201).json({ hotel })
+    res.status(201).json(hotel)
   } catch (err) {
-    console.log('Error creating hotel', err)
+    res
+      .status(500)
+      .json({ message: 'Something went wrong, please try again later...' })
+  }
+}
+
+// @desc    Get user all hotels
+// @route   GET /api/my-hotels/
+// @access  Private
+export const getAllMyHotels = async (req: Request, res: Response) => {
+  const { method, path } = req
+  const allowedKeys = myHotelRoutesAllowedKeys[method][path] || []
+  const unmatchedFieldErrors = checkUnexpectedFields(req, allowedKeys)
+  if (unmatchedFieldErrors.length !== 0) {
+    return res.status(400).json({ message: unmatchedFieldErrors })
+  }
+  const validationErrors = await validateMyHotelRouteFields(req, allowedKeys)
+  if (validationErrors.length !== 0) {
+    return res.status(400).json({ message: validationErrors })
+  }
+
+  try {
+    const hotels = await Hotel.find({ userId: req.userId })
+    return res.status(200).json(hotels)
+  } catch (err) {
     res
       .status(500)
       .json({ message: 'Something went wrong, please try again later...' })

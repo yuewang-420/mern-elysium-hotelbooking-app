@@ -50,7 +50,6 @@ const PersonalDetails = () => {
     queryKey: ['profile'],
     queryFn: apiClient.getProfile,
     retry: false,
-    // staleTime: 1000 * 60 * 10,
   })
 
   const {

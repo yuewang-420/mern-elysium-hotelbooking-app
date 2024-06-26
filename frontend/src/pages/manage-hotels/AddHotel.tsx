@@ -158,7 +158,7 @@ const AddHotel = () => {
       </span>
       <FormProvider {...formMethods}>
         <div>
-          <div className="flex flex-1 justify-center mt-4 gap-2">
+          <div className="flex flex-1 justify-center pt-4 gap-2">
             {[1, 2, 3, 4].map((step) => (
               <div key={step} className="flex justify-between items-center">
                 <StepIndicator
