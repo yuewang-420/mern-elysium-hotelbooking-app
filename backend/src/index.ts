@@ -42,7 +42,7 @@ app.use(
 )
 app.use(cookieParser())
 // Enable trust proxy to correctly read client IP from headers
-app.set('trust proxy', true)
+app.set('trust proxy', 1)
 app.use(limiter)
 
 // Serve static files from the React build directory
