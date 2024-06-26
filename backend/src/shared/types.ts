@@ -1,3 +1,13 @@
+// TypeScript definition for the User object
+export type UserType = {
+  _id: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  verified: boolean
+} & Document
+
 export type HotelType = {
   _id: string
   userId: string

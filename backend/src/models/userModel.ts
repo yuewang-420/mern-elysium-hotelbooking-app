@@ -1,16 +1,7 @@
 import mongoose, { Schema, Document, Model } from 'mongoose'
+import { UserType } from '../shared/types'
 import bcrypt from 'bcryptjs'
 import capitalize from '../utils/capitalizeInput'
-
-// TypeScript definition for the User object
-export type UserType = {
-  _id: string
-  email: string
-  password: string
-  firstName: string
-  lastName: string
-  verified: boolean
-} & Document
 
 // Mongoose schema for the User object
 const userSchema = new Schema({

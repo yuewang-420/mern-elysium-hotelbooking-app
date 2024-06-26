@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { v2 as cloudinary } from 'cloudinary'
-import Hotel, { HotelType } from '../models/hotelModel'
+import Hotel from '../models/hotelModel'
+import { HotelType } from '../shared/types'
 import { validateMyHotelRouteFields } from '../utils/validateFields'
 import checkUnexpectedFields from '../utils/checkUnexpectedFields'
 
