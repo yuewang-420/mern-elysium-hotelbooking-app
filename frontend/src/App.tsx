@@ -5,8 +5,9 @@ import Register from './pages/user/Register'
 import SignIn from './pages/user/SignIn'
 import VerifyEmail from './pages/user/VerifyEmail'
 import ForgotPassword from './pages/user/ForgotPassword'
-import ResetPassword from './pages/user/ResetPassword'
 import ManageAccount from './pages/user/ManageAccount'
+import ResetPassword from './pages/user/ResetPassword'
+import ManageHotels from './pages/manage-hotels/ManageHotels'
 import NotFound from './pages/NotFound'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -52,12 +53,9 @@ function App() {
             </Route>
             {userInfo && (
               <>
+                <Route path="manage-hotels/*" element={<ManageHotels />} />
                 <Route
-                  path="my-hotels"
-                  element={<h1 className="custom-container">hotels</h1>}
-                />
-                <Route
-                  path="my-bookings"
+                  path="manage-bookings"
                   element={<h1 className="custom-container">bookings</h1>}
                 />
               </>

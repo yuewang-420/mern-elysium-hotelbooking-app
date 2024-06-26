@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import User from '../models/userModel'
 import checkUnexpectedFields from '../utils/checkUnexpectedFields'
-import validateFields from '../utils/validateFields'
+import { validateUserRouteFields } from '../utils/validateFields'
 import assignAuthToken from '../utils/assignAuthToken'
 import comparePassword from '../utils/comparePassword'
 import EmailToken from '../models/emailTokenModel'
@@ -40,7 +40,7 @@ export const registerUser = async (req: Request, res: Response) => {
   if (unmatchedFieldErrors.length !== 0) {
     return res.status(400).json({ message: unmatchedFieldErrors })
   }
-  const validationErrors = await validateFields(req, allowedKeys)
+  const validationErrors = await validateUserRouteFields(req, allowedKeys)
   if (validationErrors.length !== 0) {
     return res.status(400).json({ message: validationErrors })
   }
@@ -82,7 +82,7 @@ export const sendVerificationEmail = async (req: Request, res: Response) => {
   if (unmatchedFieldErrors.length !== 0) {
     return res.status(400).json({ message: unmatchedFieldErrors })
   }
-  const validationErrors = await validateFields(req, allowedKeys)
+  const validationErrors = await validateUserRouteFields(req, allowedKeys)
   if (validationErrors.length !== 0) {
     return res.status(400).json({ message: validationErrors })
   }
@@ -163,7 +163,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
   if (unmatchedFieldErrors.length !== 0) {
     return res.status(400).json({ message: unmatchedFieldErrors })
   }
-  const validationErrors = await validateFields(req, allowedKeys)
+  const validationErrors = await validateUserRouteFields(req, allowedKeys)
   if (validationErrors.length !== 0) {
     return res.status(400).json({ message: validationErrors })
   }
@@ -260,7 +260,7 @@ export const authUser = async (req: Request, res: Response) => {
   if (unmatchedFieldErrors.length !== 0) {
     return res.status(400).json({ message: unmatchedFieldErrors })
   }
-  const validationErrors = await validateFields(req, allowedKeys)
+  const validationErrors = await validateUserRouteFields(req, allowedKeys)
   if (validationErrors.length !== 0) {
     return res.status(400).json({ message: validationErrors })
   }
@@ -368,7 +368,7 @@ export const logoutUser = async (req: Request, res: Response) => {
   if (unmatchedFieldErrors.length !== 0) {
     return res.status(400).json({ message: unmatchedFieldErrors })
   }
-  const validationErrors = await validateFields(req, allowedKeys)
+  const validationErrors = await validateUserRouteFields(req, allowedKeys)
   if (validationErrors.length !== 0) {
     return res.status(400).json({ message: validationErrors })
   }
@@ -392,7 +392,7 @@ export const sendResetLink = async (req: Request, res: Response) => {
   if (unmatchedFieldErrors.length !== 0) {
     return res.status(400).json({ message: unmatchedFieldErrors })
   }
-  const validationErrors = await validateFields(req, allowedKeys)
+  const validationErrors = await validateUserRouteFields(req, allowedKeys)
   if (validationErrors.length !== 0) {
     return res.status(400).json({ message: validationErrors })
   }
@@ -475,7 +475,7 @@ export const verifyResetLink = async (req: Request, res: Response) => {
   if (unmatchedFieldErrors.length !== 0) {
     return res.status(400).json({ message: unmatchedFieldErrors })
   }
-  const validationErrors = await validateFields(req, allowedKeys)
+  const validationErrors = await validateUserRouteFields(req, allowedKeys)
   if (validationErrors.length !== 0) {
     return res.status(400).json({ message: validationErrors })
   }
@@ -575,7 +575,7 @@ export const resetPassword = async (req: Request, res: Response) => {
   if (unmatchedFieldErrors.length !== 0) {
     return res.status(400).json({ message: unmatchedFieldErrors })
   }
-  const validationErrors = await validateFields(req, allowedKeys)
+  const validationErrors = await validateUserRouteFields(req, allowedKeys)
   if (validationErrors.length !== 0) {
     return res.status(400).json({ message: validationErrors })
   }
@@ -621,7 +621,7 @@ export const getUserProfile = async (req: Request, res: Response) => {
   if (unmatchedFieldErrors.length !== 0) {
     return res.status(400).json({ message: unmatchedFieldErrors })
   }
-  const validationErrors = await validateFields(req, allowedKeys)
+  const validationErrors = await validateUserRouteFields(req, allowedKeys)
   if (validationErrors.length !== 0) {
     return res.status(400).json({ message: validationErrors })
   }
@@ -647,7 +647,7 @@ export const updateUserProfile = async (req: Request, res: Response) => {
   if (unmatchedFieldErrors.length !== 0) {
     return res.status(400).json({ message: unmatchedFieldErrors })
   }
-  const validationErrors = await validateFields(req, allowedKeys)
+  const validationErrors = await validateUserRouteFields(req, allowedKeys)
   if (validationErrors.length !== 0) {
     return res.status(400).json({ message: validationErrors })
   }

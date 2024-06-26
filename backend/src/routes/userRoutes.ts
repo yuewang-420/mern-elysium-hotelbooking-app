@@ -19,10 +19,10 @@ const router = express.Router()
 // POST   User register
 router.post('/register', registerUser)
 
-// POST     Request email verification link, Send link to user email
+// POST   Request email verification link, Send link to user email
 router.post('/email', sendVerificationEmail)
 
-// POST     Verify the email link
+// POST   Verify the email link
 router.post('/email/verify', verifyEmail)
 
 // POST   User authentication
@@ -37,7 +37,7 @@ router.post('/logout', logoutUser)
 // POST   User request to reset password, send reset link to user email
 router.post('/forgot-password', sendResetLink)
 
-// POST    Verify the password link
+// POST   Verify the password link
 router.post('/reset-password', verifyResetLink)
 
 // PUT    Update/reset the user password

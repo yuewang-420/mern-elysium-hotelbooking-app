@@ -36,8 +36,8 @@ const Header = () => {
   const handleSignOutClick = () => {
     if (
       path.includes('/user/manage-account') ||
-      path.includes('/my-hotels') ||
-      path.includes('/my-bookings')
+      path.includes('/manage-hotels') ||
+      path.includes('/manage-bookings')
     ) {
       navigate('/')
     }
@@ -61,12 +61,12 @@ const Header = () => {
       onClick: () => navigate('user/manage-account'),
     },
     {
-      name: 'My bookings',
-      onClick: () => navigate('my-bookings'),
+      name: 'Manage bookings',
+      onClick: () => navigate('manage-bookings'),
     },
     {
-      name: 'My hotels',
-      onClick: () => navigate('my-hotels'),
+      name: 'Manage hotels',
+      onClick: () => navigate('manage-hotels'),
     },
     {
       name: 'Log out',

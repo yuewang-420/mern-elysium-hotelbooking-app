@@ -17,7 +17,7 @@ export const passwordRegex =
   /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/
 export const alphaRegex = /^[A-Za-z]+$/
 
-export const registerFormSchema = z
+const registerFormSchema = z
   .object({
     firstName: z
       .string()

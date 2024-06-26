@@ -80,7 +80,6 @@ const ResetPassword = () => {
 
   const verifyMutation = useMutation({
     mutationFn: apiClient.verifyResetLink,
-    retry: false,
     onSuccess: async (data) => {
       setResBody(data)
     },

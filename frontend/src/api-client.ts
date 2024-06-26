@@ -264,3 +264,24 @@ export const updateProfile = async (data: UpdateProfileFormData) => {
 
   return body
 }
+
+export const addNewHotel = async (addHotelFormData: FormData) => {
+  const res = await fetch(`${API_BASE_URL}/api/my-hotels/`, {
+    method: 'POST',
+    credentials: 'include',
+    body: addHotelFormData,
+  })
+
+  const body = await res.json()
+
+  if (!res.ok) {
+    const errMessage = body.message
+    if (typeof errMessage === 'string') {
+      throw new Error(errMessage)
+    } else {
+      throw new Error(errMessage.join(' '))
+    }
+  }
+
+  return body
+}

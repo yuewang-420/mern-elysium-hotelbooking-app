@@ -10,7 +10,8 @@ type ValidationFunctions = {
   [key: string]: ValidationChain
 }
 
-const validations: ValidationFunctions = {
+const userRouteValidations: ValidationFunctions = {
+  // Register, Auth
   email: check('email', 'A valid email address is required.').isEmail().trim(),
   password: check('password', 'Password must be a string.')
     .isString()
@@ -38,19 +39,76 @@ const validations: ValidationFunctions = {
     .isLength({ min: 2, max: 20 })
     .withMessage('Last name must be between 2 and 20 characters.')
     .trim(),
+  // Verify email, reset password
   token: check('token', 'A valid token is required.').notEmpty(),
   otp: check('otp', 'A valid otp is required.').isString().notEmpty(),
 }
 
+const myHotelValidations: ValidationFunctions = {
+  // My hotels
+  name: check('name', 'Name is required.')
+    .isString()
+    .notEmpty()
+    .isLength({ min: 2, max: 50 })
+    .withMessage('Name must be between 2 and 50 characters.')
+    .trim(),
+  description: check('description', 'Description is required.')
+    .isString()
+    .notEmpty()
+    .isLength({ min: 10, max: 5000 })
+    .withMessage('Description must be between 10 and 5000 characters.')
+    .trim(),
+  type: check('type', 'Hotel type is required').isString().notEmpty().trim(),
+  adultCount: check('adultCount', 'Adult count is required.')
+    .isInt({ min: 1 })
+    .withMessage('Adult count must be an integer greater than 1.')
+    .notEmpty()
+    .trim(),
+  childCount: check('childCount', 'Child count is required.')
+    .isInt({ min: 0 })
+    .withMessage('Child count must be a non-negative integer.')
+    .notEmpty()
+    .trim(),
+  starRating: check('starRating', 'Star rating count is required.')
+    .isInt({ min: 1, max: 5 })
+    .withMessage('Star rating must be between 1 and 5.')
+    .notEmpty()
+    .trim(),
+  pricePerNight: check('pricePerNight', 'A valid price per night is required.')
+    .isNumeric()
+    .notEmpty()
+    .isFloat({ min: 1, max: 10000 })
+    .withMessage('Price per night must be between 1 and 10000.')
+    .trim(),
+  facilities: check('facilities', 'Facilities are required.')
+    .isArray()
+    .notEmpty(),
+  // Address fields
+  roomNumber: check('roomNumber', 'Room number is required.')
+    .isInt({ min: 0 })
+    .withMessage('Room number must be a non-negative integer.')
+    .notEmpty()
+    .trim(),
+  streetAddress: check('streetAddress', 'Street address is required.')
+    .isString()
+    .notEmpty()
+    .trim(),
+  city: check('city', 'City is required.').isString().notEmpty().trim(),
+  country: check('country', 'Country is required.')
+    .isString()
+    .notEmpty()
+    .trim(),
+}
+
 /**
- * Utility function to validate request body fields based on allowed keys.
+ * Utility function to validate user routes request body fields based on allowed keys.
  * @param req The Express request object.
  * @param allowedKeys The allowed keys for the request body.
  */
-const validateFields = async (req: Request, allowedKeys: string[]) => {
+const validateUserRouteFields = async (req: Request, allowedKeys: string[]) => {
   const undefinedFields: string[] = []
   allowedKeys.forEach((key) => {
-    if (!validations[key]) {
+    if (!userRouteValidations[key]) {
       undefinedFields.push(key)
     }
   })
@@ -60,7 +118,9 @@ const validateFields = async (req: Request, allowedKeys: string[]) => {
       `Validation for field ${undefinedFields.join(', ')} not defined.`
     )
   } else {
-    await Promise.all(allowedKeys.map((key) => validations[key].run(req)))
+    await Promise.all(
+      allowedKeys.map((key) => userRouteValidations[key].run(req))
+    )
 
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
@@ -71,4 +131,38 @@ const validateFields = async (req: Request, allowedKeys: string[]) => {
   }
 }
 
-export default validateFields
+/**
+ * Utility function to validate my hotel routes request body fields based on allowed keys.
+ * @param req The Express request object.
+ * @param allowedKeys The allowed keys for the request body.
+ */
+const validateMyHotelRouteFields = async (
+  req: Request,
+  allowedKeys: string[]
+) => {
+  const undefinedFields: string[] = []
+  allowedKeys.forEach((key) => {
+    if (!myHotelValidations[key]) {
+      undefinedFields.push(key)
+    }
+  })
+
+  if (undefinedFields.length > 0) {
+    throw new Error(
+      `Validation for field ${undefinedFields.join(', ')} not defined.`
+    )
+  } else {
+    await Promise.all(
+      allowedKeys.map((key) => myHotelValidations[key].run(req))
+    )
+
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return errors.array().map((errItem) => errItem.msg)
+    } else {
+      return []
+    }
+  }
+}
+
+export { validateUserRouteFields, validateMyHotelRouteFields }
