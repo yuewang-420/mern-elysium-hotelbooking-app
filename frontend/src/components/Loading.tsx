@@ -5,12 +5,12 @@ type LoadingProps = {
 
 const Loading = ({ loadingMsg = 'Loading...' }: LoadingProps) => {
   return (
-    <>
+    <div>
       <AiOutlineLoading3Quarters className="text-6xl md:text-8xl text-sky-500 animate-spin" />
       <p className="text-lg md:text-base font-medium md:font-semibold text-neutral-800">
         {loadingMsg}
       </p>
-    </>
+    </div>
   )
 }
 

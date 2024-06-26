@@ -41,8 +41,8 @@ const MyHotels = () => {
             <MyHotelCard hotel={hotel} />
           ))}
         </div>
-      )}{' '}
-      :{' '}
+      )}
+      :
       {isSuccess && myHotelData.length === 0 && (
         <div className="mx-auto max-w-screen-sm text-center flex flex-col">
           <h1 className="mb-4 text-5xl tracking-tight font-extrabold lg:text-7xl text-neutral-800">
