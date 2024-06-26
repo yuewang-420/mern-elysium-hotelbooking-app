@@ -2,7 +2,7 @@ import { RegFormData } from './pages/user/Register'
 import { SignInFormData } from './pages/user/SignIn'
 import { ForgotPasswordFormData } from './pages/user/ForgotPassword'
 import { UpdateProfileFormData } from './pages/user/PersonalDetails'
-import { HotelType } from '../../backend/src/models/hotelModel'
+import { HotelType } from '../../backend/src/shared/types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 

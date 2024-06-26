@@ -1,4 +1,4 @@
-import { HotelType } from '../../../backend/src/models/hotelModel'
+import { HotelType } from '../../../backend/src/shared/types'
 import Button from './Button'
 import {
   FaMapLocation,
