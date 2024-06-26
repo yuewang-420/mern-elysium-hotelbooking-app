@@ -35,13 +35,15 @@ const MyHotels = () => {
       </span>
       {isLoading && <Loading loadingMsg="Fetching your hotels..." />}
       {isError && <Error errMsg={error.message} />}
-      {isSuccess && myHotelData.length > 0 ? (
+      {isSuccess && myHotelData.length > 0 && (
         <div className="flex flex-col gap-6 w-full pt-4">
           {myHotelData.map((hotel) => (
             <MyHotelCard hotel={hotel} />
           ))}
         </div>
-      ) : (
+      )}{' '}
+      :{' '}
+      {isSuccess && myHotelData.length === 0 && (
         <div className="mx-auto max-w-screen-sm text-center flex flex-col">
           <h1 className="mb-4 text-5xl tracking-tight font-extrabold lg:text-7xl text-neutral-800">
             No Hotels Found
