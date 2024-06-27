@@ -14,6 +14,8 @@ import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
+const streetAddressRegex = /^(?=.*\d)(?=.*[a-zA-Z]).+$/
+
 const addHotelSchema = z.object({
   name: z
     .string()
@@ -24,15 +26,18 @@ const addHotelSchema = z.object({
     .number({ message: 'A valid room number is required.' })
     .int()
     .min(0, { message: 'Room number must be a non-negative integer.' }),
-  streetAddress: z.string().nonempty('Street address is required.'),
-  city: z.string().nonempty('City is required.'),
-  country: z.string().nonempty('Country is required.'),
+  streetAddress: z
+    .string({ message: 'Street address is required.' })
+    .regex(streetAddressRegex, {
+      message: 'Street address must contain street number and name.',
+    }),
+  city: z.string({ message: 'City is required.' }),
+  country: z.string({ message: 'Country is required.' }),
   description: z
-    .string()
+    .string({ message: 'Description is required.' })
     .min(10, { message: 'Description must be at least 10 characters.' })
-    .max(5000, { message: 'Description cannot exceed 5000 characters.' })
-    .nonempty('Description is required.'),
-  type: z.string({ message: 'Hotel type is required.' }).nonempty(),
+    .max(5000, { message: 'Description cannot exceed 5000 characters.' }),
+  type: z.string({ message: 'Hotel type is required.' }),
   adultCount: z
     .number({ message: 'Adult count is required.' })
     .int()

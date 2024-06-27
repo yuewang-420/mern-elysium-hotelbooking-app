@@ -13,9 +13,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { RiLockPasswordLine } from 'react-icons/ri'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
 import Button from '../../components/Button'
-
-export const passwordRegex =
-  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/
+import { passwordRegex } from './Register'
 
 export const resetPasswordFormSchema = z
   .object({
@@ -76,6 +74,7 @@ const ResetPassword = () => {
     formState: { errors },
   } = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordFormSchema),
+    mode: 'all',
   })
 
   const verifyMutation = useMutation({

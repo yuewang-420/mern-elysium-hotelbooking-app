@@ -24,7 +24,7 @@ const AddressInformation = () => {
     if (streetAddressWatch && addressRef.current) {
       addressRef.current.value = streetAddressWatch
     }
-  }, [streetAddressWatch, setValue])
+  }, [streetAddressWatch])
 
   useEffect(() => {
     const loader = new Loader({
@@ -59,7 +59,11 @@ const AddressInformation = () => {
             status === google.maps.places.PlacesServiceStatus.OK &&
             predictions
           ) {
-            setSuggestions(predictions)
+            // Only get street address
+            const filteredPredictions = predictions.filter((prediction) =>
+              prediction.types.includes('street_address')
+            )
+            setSuggestions(filteredPredictions)
           } else {
             setSuggestions([])
           }
@@ -127,7 +131,12 @@ const AddressInformation = () => {
     <>
       {/* street address, city, country */}
       <div className="text-sm md:text-base font-medium text-neutral-700 flex-1 relative">
-        Street address
+        <span className="flex flex-col md:flex-row gap-0 md:gap-2 md:items-center">
+          Street address
+          <p className="text-xs md:text-sm font-normal text-neutral-400">
+            {'(must contain street number and street name)'}
+          </p>
+        </span>
         <input
           type="text"
           className="text-sm md:text-base border border-neutral-300 rounded w-full py-1 px-2 mt-1"
@@ -142,7 +151,7 @@ const AddressInformation = () => {
           </span>
         )}
         {suggestions.length > 0 && (
-          <ul className="absolute z-10 bg-white border border-neutral-300 rounded w-full mt-1 divide-y">
+          <ul className="absolute z-10 bg-white border border-neutral-300 rounded w-full mt-1 divide-y overflow-y-auto">
             {suggestions.map((suggestion) => (
               <li
                 key={suggestion.place_id}

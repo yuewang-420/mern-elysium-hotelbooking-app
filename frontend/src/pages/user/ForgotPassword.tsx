@@ -10,8 +10,7 @@ import { toast } from 'react-toastify'
 
 const forgotPasswordFormSchema = z.object({
   email: z
-    .string()
-    .nonempty({ message: 'This field is required.' })
+    .string({ message: 'This field is required.' })
     .email({ message: 'A valid email address is required.' }),
 })
 export type ForgotPasswordFormData = z.infer<typeof forgotPasswordFormSchema>
@@ -23,6 +22,7 @@ const ForgotPassword = () => {
     formState: { errors },
   } = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordFormSchema),
+    mode: 'all',
   })
 
   const forgotPasswordMutation = useMutation({

@@ -20,37 +20,32 @@ export const alphaRegex = /^[A-Za-z]+$/
 const registerFormSchema = z
   .object({
     firstName: z
-      .string()
-      .nonempty({ message: 'This field is required.' })
+      .string({ message: 'This field is required.' })
       .regex(alphaRegex, {
         message: 'Only English letters are accepted.',
       })
       .min(2, { message: 'At least 2 characters.' })
       .max(20, { message: 'At most 20 characters.' }),
     lastName: z
-      .string()
-      .nonempty({ message: 'This field is required.' })
+      .string({ message: 'This field is required.' })
+
       .regex(alphaRegex, {
         message: 'Only English letters are accepted.',
       })
       .min(2, { message: 'At least 2 characters.' })
       .max(20, { message: 'At most 20 characters.' }),
     email: z
-      .string()
-      .nonempty({ message: 'This field is required.' })
+      .string({ message: 'This field is required.' })
       .email({ message: 'A valid email address is required.' }),
     password: z
-      .string()
-      .nonempty({ message: 'This field is required.' })
+      .string({ message: 'This field is required.' })
       .min(8, { message: 'Password must be at least 8 characters long.' })
       .max(20, { message: 'Password must be at most 20 characters long.' })
       .regex(passwordRegex, {
         message:
-          'At least one lowercase, uppercase, number, and special character.',
+          'At least one lowercase, uppercase, number, and special character (!@#$%^&*).',
       }),
-    confirmPassword: z
-      .string()
-      .nonempty({ message: 'This field is required.' }),
+    confirmPassword: z.string({ message: 'This field is required.' }),
   })
   .superRefine(({ password, confirmPassword }, ctx) => {
     if (password !== confirmPassword) {
@@ -71,6 +66,7 @@ const Register = () => {
     formState: { errors },
   } = useForm<RegFormData>({
     resolver: zodResolver(registerFormSchema),
+    mode: 'all',
   })
 
   const registerMutation = useMutation({

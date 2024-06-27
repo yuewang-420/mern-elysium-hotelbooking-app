@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 const MyHotels = () => {
   const {
     data: myHotelData,
-    isLoading,
+    isPending,
     isError,
     isSuccess,
     error,
@@ -33,7 +33,7 @@ const MyHotels = () => {
           to view its details or edit it.
         </p>
       </span>
-      {isLoading && <Loading loadingMsg="Fetching your hotels..." />}
+      {isPending && <Loading loadingMsg="Fetching your hotels..." />}
       {isError && <Error errMsg={error.message} />}
       {isSuccess && myHotelData.length > 0 && (
         <div className="flex flex-col gap-6 w-full pt-4">
@@ -42,7 +42,6 @@ const MyHotels = () => {
           ))}
         </div>
       )}
-      :
       {isSuccess && myHotelData.length === 0 && (
         <div className="mx-auto max-w-screen-sm text-center flex flex-col">
           <h1 className="mb-4 text-5xl tracking-tight font-extrabold lg:text-7xl text-neutral-800">

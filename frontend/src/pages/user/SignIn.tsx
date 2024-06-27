@@ -15,22 +15,18 @@ import { useAppDispatch } from '../../store'
 import { toast } from 'react-toastify'
 import { setCredentials } from '../../slices/authSlice'
 import confetti from 'canvas-confetti'
-
-const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\\|[\]{};:'",.<>/?`~])[A-Za-z\d!@#$%^&*()\-_=+\\|[\]{};:'",.<>/?`~]{8,}$/
+import { passwordRegex } from './Register'
 
 const signInFormSchema = z.object({
   email: z
-    .string()
-    .nonempty({ message: 'This field is required.' })
+    .string({ message: 'This field is required.' })
     .email({ message: 'A valid email address is required.' }),
   password: z
-    .string()
-    .nonempty({ message: 'This field is required.' })
+    .string({ message: 'This field is required.' })
     .min(8, { message: 'Password must be at least 8 characters long.' })
     .regex(passwordRegex, {
       message:
-        'At least one lowercase, uppercase, number, and special character.',
+        'At least one lowercase, uppercase, number, and special character (!@#$%^&*).',
     }),
 })
 
@@ -49,6 +45,7 @@ const SignIn = () => {
     formState: { errors },
   } = useForm<SignInFormData>({
     resolver: zodResolver(signInFormSchema),
+    mode: 'all',
   })
 
   const navigate = useNavigate()

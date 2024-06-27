@@ -18,16 +18,14 @@ import Badge from '../../components/Badge'
 
 export const updateProfileFormSchema = z.object({
   firstName: z
-    .string()
-    .nonempty({ message: 'This field is required.' })
+    .string({ message: 'This field is required.' })
     .regex(alphaRegex, {
       message: 'Only English letters are accepted.',
     })
     .min(2, { message: 'At least 2 characters.' })
     .max(20, { message: 'At most 20 characters.' }),
   lastName: z
-    .string()
-    .nonempty({ message: 'This field is required.' })
+    .string({ message: 'This field is required.' })
     .regex(alphaRegex, {
       message: 'Only English letters are accepted.',
     })
@@ -42,7 +40,7 @@ const PersonalDetails = () => {
 
   const {
     data: profileData,
-    isLoading,
+    isPending,
     isError,
     isSuccess,
     error,
@@ -64,6 +62,7 @@ const PersonalDetails = () => {
       firstName: '',
       lastName: '',
     },
+    mode: 'all',
   })
 
   useEffect(() => {
@@ -108,7 +107,7 @@ const PersonalDetails = () => {
         className="w-full flex flex-col py-4 md:gap-4 gap-6"
         onSubmit={onUpdateProfileFormSubmit}
       >
-        {isLoading && <Loading loadingMsg="Fetching personal details..." />}
+        {isPending && <Loading loadingMsg="Fetching personal details..." />}
         {isError && <Error errMsg={error.message} />}
         {isSuccess && (
           <>
