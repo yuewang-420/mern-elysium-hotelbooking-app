@@ -130,7 +130,6 @@ const ManageHotelForm = ({
       (JSON.stringify(hotel.imageUrls) !== JSON.stringify(watch('imageUrls')) ||
         watch('imageFiles') instanceof FileList)
     ) {
-      console.log(hotel.imageUrls !== watch('imageUrls'))
       setIsFormChanged(true)
     }
   }, [watch('imageFiles'), watch('imageUrls')])
