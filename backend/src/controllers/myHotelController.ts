@@ -190,7 +190,12 @@ export const updateMyHotelById = async (req: Request, res: Response) => {
       updatedImageUrls = await uploadImages(files)
     }
 
-    hotel.imageUrls = [...updatedImageUrls, ...(updatedHotel.imageUrls || [])]
+    hotel.imageUrls = [
+      ...updatedImageUrls,
+      ...(((updatedHotel.imageUrls as string[] | string) !== 'EMPTY_ARRAY' &&
+        updatedHotel.imageUrls) ||
+        []),
+    ]
 
     await hotel.save()
     res.status(201).json(hotel)
