@@ -1,23 +1,41 @@
 import { useState, useCallback, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useFormContext } from 'react-hook-form'
+import { ManageHotelFormData } from './ManageHotelForm'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { toast } from 'react-toastify'
 
 type FilePreview = {
-  file: File
+  file?: File
   previewUrl: string
-  base64Data: string
+  base64Data?: string
+  isRemote?: boolean
 }
 
-const UploadImages = () => {
+type UploadImagesProps = {
+  initialImageUrls?: string[]
+}
+
+const UploadImages = ({ initialImageUrls }: UploadImagesProps) => {
   const {
     register,
     setValue,
     trigger,
+    watch,
     formState: { errors },
-  } = useFormContext()
+  } = useFormContext<ManageHotelFormData>()
   const [filePreviews, setFilePreviews] = useState<FilePreview[]>([])
+  const existingImageUrls = watch('imageUrls')
+
+  useEffect(() => {
+    if (initialImageUrls && initialImageUrls.length > 0) {
+      const initialPreviews = initialImageUrls.map((url) => ({
+        previewUrl: url,
+        isRemote: true,
+      }))
+      setFilePreviews(initialPreviews)
+    }
+  }, [initialImageUrls])
 
   useEffect(() => {
     sessionStorage.setItem('filePreviews', JSON.stringify(filePreviews))
@@ -29,7 +47,8 @@ const UploadImages = () => {
 
       try {
         const uniqueNewFiles = newFiles.filter(
-          (file) => !filePreviews.some((fp) => fp.file.name === file.name)
+          (file) =>
+            !filePreviews.some((fp) => fp?.file && fp.file.name === file.name)
         )
 
         if (uniqueNewFiles.length !== newFiles.length) {
@@ -53,7 +72,7 @@ const UploadImages = () => {
         const updatedFilePreviews = [...filePreviews, ...newFilePreviews]
         setFilePreviews(updatedFilePreviews)
         const allFileObjects = [
-          ...filePreviews.map((fp) => fp.file),
+          ...filePreviews.filter((fp) => !!fp.file),
           ...uniqueNewFiles,
         ]
         setValue('imageFiles', allFileObjects)
@@ -66,11 +85,27 @@ const UploadImages = () => {
     [filePreviews, setValue, trigger]
   )
 
-  const removeFile = (file: File) => {
-    const updatedFilePreviews = filePreviews.filter((fp) => fp.file !== file)
+  const removeFile = (fileOrUrl: File | string) => {
+    let updatedFilePreviews: FilePreview[] = []
+
+    if (typeof fileOrUrl === 'string') {
+      updatedFilePreviews = filePreviews.filter(
+        (fp) => fp.previewUrl !== fileOrUrl
+      )
+      setValue(
+        'imageUrls',
+        existingImageUrls.filter((url: string) => url !== fileOrUrl)
+      )
+      trigger('imageUrls')
+    } else {
+      updatedFilePreviews = filePreviews.filter((fp) => fp.file !== fileOrUrl)
+      const remainingFiles = updatedFilePreviews
+        .filter((fp: FilePreview) => fp.file !== null && fp.file !== undefined)
+        .map((fp: FilePreview) => fp.file)
+      setValue('imageFiles', remainingFiles)
+      trigger('imageFiles')
+    }
     setFilePreviews(updatedFilePreviews)
-    const remainingFiles = updatedFilePreviews.map((fp) => fp.file)
-    setValue('imageFiles', remainingFiles)
     trigger('imageFiles')
   }
 
@@ -129,7 +164,7 @@ const UploadImages = () => {
         {filePreviews.map((fp, index) => (
           <div key={index} className="relative group">
             <img
-              src={fp.base64Data}
+              src={fp.base64Data || fp.previewUrl}
               alt={`Preview-${index}`}
               className="h-40 w-full object-cover rounded"
             />
@@ -137,7 +172,7 @@ const UploadImages = () => {
               <button
                 onClick={(e) => {
                   e.preventDefault()
-                  removeFile(fp.file)
+                  removeFile(fp.file || fp.previewUrl)
                 }}
                 className="text-white rounded-full hover:bg-red-500 p-1"
               >
@@ -150,7 +185,7 @@ const UploadImages = () => {
       {/* Display error message for imageFiles */}
       {errors.imageFiles && (
         <span className="text-red-600 text-xs font-normal tracking-wide block absolute bottom-0 left-0 transform translate-y-full">
-          {JSON.stringify(errors.imageFiles.message).replace(/"/g, '')}
+          {errors.imageFiles.message as string}
         </span>
       )}
     </div>

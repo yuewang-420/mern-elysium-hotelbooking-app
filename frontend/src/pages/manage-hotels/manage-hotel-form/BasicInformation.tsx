@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form'
-import { AddHotelFormData } from '../AddHotel'
+import { ManageHotelFormData } from './ManageHotelForm'
 
 const hotelTypes = [
   'Budget',
@@ -34,7 +34,7 @@ const BasicInformation = () => {
     register,
     watch,
     formState: { errors },
-  } = useFormContext<AddHotelFormData>()
+  } = useFormContext<ManageHotelFormData>()
 
   const [typeWatch, facilitiesWatch] = [
     watch('type'),

@@ -53,7 +53,6 @@ const PersonalDetails = () => {
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
     formState: { dirtyFields, errors },
   } = useForm<UpdateProfileFormData>({
@@ -66,11 +65,8 @@ const PersonalDetails = () => {
   })
 
   useEffect(() => {
-    if (isSuccess) {
-      setValue('firstName', profileData.firstName || '')
-      setValue('lastName', profileData.lastName || '')
-    }
-  }, [isSuccess, profileData, setValue])
+    reset(profileData)
+  }, [profileData, reset])
 
   const isFormChanged = Object.keys(dirtyFields).length > 0
 

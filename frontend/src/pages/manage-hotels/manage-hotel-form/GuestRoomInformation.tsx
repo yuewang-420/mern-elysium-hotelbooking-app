@@ -1,11 +1,11 @@
 import { useFormContext } from 'react-hook-form'
-import { AddHotelFormData } from '../AddHotel'
+import { ManageHotelFormData } from './ManageHotelForm'
 
 const GuestRoomInformation = () => {
   const {
     register,
     formState: { errors },
-  } = useFormContext<AddHotelFormData>()
+  } = useFormContext<ManageHotelFormData>()
   return (
     <>
       <div className="text-sm md:text-base font-medium text-neutral-700 flex-1 relative">
@@ -21,6 +21,12 @@ const GuestRoomInformation = () => {
             MozAppearance: 'textfield',
           }}
           {...register('roomNumber', { valueAsNumber: true })}
+          onWheel={(e) => e.preventDefault()}
+          onKeyDown={(e) => {
+            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+              e.preventDefault()
+            }
+          }}
         />
         {errors.roomNumber && (
           <span className="text-red-600 text-xs font-normal tracking-wide absolute bottom-0 left-0 transform translate-y-full">
@@ -37,6 +43,7 @@ const GuestRoomInformation = () => {
           className="text-sm md:text-base border border-neutral-300 rounded w-full py-1 px-2 mt-1"
           placeholder="Enter adult count here..."
           {...register('adultCount', { valueAsNumber: true })}
+          onWheel={(e) => e.preventDefault()}
         />
         {errors.adultCount && (
           <span className="text-red-600 text-xs font-normal tracking-wide absolute bottom-0 left-0 transform translate-y-full">
@@ -53,6 +60,7 @@ const GuestRoomInformation = () => {
           className="text-sm md:text-base border border-neutral-300 rounded w-full py-1 px-2 mt-1"
           placeholder="Enter child count here..."
           {...register('childCount', { valueAsNumber: true })}
+          onWheel={(e) => e.preventDefault()}
         />
         {errors.childCount && (
           <span className="text-red-600 text-xs font-normal tracking-wide absolute bottom-0 left-0 transform translate-y-full">
@@ -73,6 +81,12 @@ const GuestRoomInformation = () => {
             MozAppearance: 'textfield',
           }}
           {...register('pricePerNight', { valueAsNumber: true })}
+          onWheel={(e) => e.preventDefault()}
+          onKeyDown={(e) => {
+            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+              e.preventDefault()
+            }
+          }}
         />
         {errors.pricePerNight && (
           <span className="text-red-600 text-xs font-normal tracking-wide absolute bottom-0 left-0 transform translate-y-full">

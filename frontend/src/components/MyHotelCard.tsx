@@ -1,5 +1,6 @@
 import { HotelType } from '../../../backend/src/shared/types'
 import Button from './Button'
+import { useNavigate } from 'react-router-dom'
 import {
   FaMapLocation,
   FaBuilding,
@@ -14,6 +15,7 @@ type MyHotelCardProps = {
 }
 
 const MyHotelCard = ({ hotel }: MyHotelCardProps) => {
+  const navigate = useNavigate()
   return (
     <div className="flex flex-col justify-between w-full border border-neutral-200 rounded px-8 py-6 gap-4">
       <h2 className="text-lg md:text-xl font-bold text-neutral-700">
@@ -52,7 +54,9 @@ const MyHotelCard = ({ hotel }: MyHotelCardProps) => {
       </div>
       <span className="flex flex-col justify-center gap-2 md:flex-row md:justify-between md:gap-0">
         <Button>Detail page</Button>
-        <Button>Edit</Button>
+        <Button onClick={() => navigate(`../edit-hotel/${hotel._id}`)}>
+          Edit
+        </Button>
       </span>
     </div>
   )

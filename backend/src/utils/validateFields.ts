@@ -45,6 +45,10 @@ const userRouteValidations: ValidationFunctions = {
 }
 
 const myHotelValidations: ValidationFunctions = {
+  hotelId: check('hotelId', 'Hotel id is required.')
+    .isString()
+    .notEmpty()
+    .trim(),
   // My hotels
   name: check('name', 'Name is required.')
     .isString()
@@ -98,6 +102,25 @@ const myHotelValidations: ValidationFunctions = {
     .isString()
     .notEmpty()
     .trim(),
+  // Optional imageUrls
+  imageUrls: check('imageUrls')
+    .optional()
+    .custom((value) => {
+      if (typeof value === 'string' && value === 'EMPTY_ARRAY') {
+        return true
+      } else if (Array.isArray(value)) {
+        value.forEach((url) => {
+          if (!/^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url)) {
+            throw new Error('Invalid image URL format.')
+          }
+        })
+        return true
+      } else {
+        throw new Error(
+          'Image URLs must be an array of image URL or  string of "EMPTY_ARRAY".'
+        )
+      }
+    }),
 }
 
 /**

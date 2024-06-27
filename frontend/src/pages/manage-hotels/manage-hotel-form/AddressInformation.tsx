@@ -1,7 +1,7 @@
-import { AddHotelFormData } from '../AddHotel'
 import { useFormContext } from 'react-hook-form'
 import { useState, useEffect, useRef } from 'react'
 import { Loader } from '@googlemaps/js-api-loader'
+import { ManageHotelFormData } from './ManageHotelForm'
 
 const AddressInformation = () => {
   const {
@@ -9,7 +9,7 @@ const AddressInformation = () => {
     setValue,
     formState: { errors },
     watch,
-  } = useFormContext<AddHotelFormData>()
+  } = useFormContext<ManageHotelFormData>()
 
   const streetAddressWatch = watch('streetAddress')
 

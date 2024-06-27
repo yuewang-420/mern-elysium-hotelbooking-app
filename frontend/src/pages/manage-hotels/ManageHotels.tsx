@@ -1,15 +1,41 @@
 import SideMenu from '../../components/SideMenu'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import MyHotels from './MyHotels'
 import AddHotel from './AddHotel'
 import EditHotel from './EditHotel'
 import NotFound from '../NotFound'
+import { useEffect, useState } from 'react'
 
 const ManageHotels = () => {
-  const sideMenuItems = [
+  const location = useLocation()
+
+  const [sideMenuItems, setSideMenuItems] = useState([
     { title: 'Show my hotels', path: 'my-hotels' },
     { title: 'Add a new hotel', path: 'add-hotel' },
-  ]
+  ])
+
+  useEffect(() => {
+    if (location.pathname.includes('edit-hotel')) {
+      setSideMenuItems((prevItems) => {
+        const editHotelItem = {
+          title: 'Update a hotel',
+          path: location.pathname,
+        }
+        const existingItem = prevItems.find(
+          (item) => item.title === 'Update a hotel'
+        )
+        if (existingItem) {
+          return prevItems
+        } else {
+          return [...prevItems, editHotelItem]
+        }
+      })
+    } else {
+      setSideMenuItems((prevItems) =>
+        prevItems.filter((item) => item.title !== 'Update a hotel')
+      )
+    }
+  }, [location])
 
   return (
     <div className="custom-container py-6 w-full justify-center md:justify-between items-center md:items-start flex flex-col md:flex-row">

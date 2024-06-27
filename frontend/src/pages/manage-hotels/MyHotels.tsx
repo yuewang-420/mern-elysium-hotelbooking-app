@@ -14,8 +14,8 @@ const MyHotels = () => {
     isSuccess,
     error,
   } = useQuery({
-    queryKey: ['myHotels'],
-    queryFn: apiClient.getMyHotels,
+    queryKey: ['fetchMyHotels'],
+    queryFn: apiClient.fetchMyHotels,
     retry: false,
   })
 
