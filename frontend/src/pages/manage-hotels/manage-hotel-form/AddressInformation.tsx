@@ -102,10 +102,15 @@ const AddressInformation = () => {
             (component: google.maps.GeocoderAddressComponent) =>
               component.types.includes('locality')
           )?.long_name
-          const city = addressComponents.find(
-            (component: google.maps.GeocoderAddressComponent) =>
-              component.types.includes('administrative_area_level_2')
-          )?.long_name
+          const city =
+            addressComponents.find(
+              (component: google.maps.GeocoderAddressComponent) =>
+                component.types.includes('administrative_area_level_2')
+            )?.long_name ||
+            addressComponents.find(
+              (component: google.maps.GeocoderAddressComponent) =>
+                component.types.includes('administrative_area_level_1')
+            )?.long_name
           const country = addressComponents.find(
             (component: google.maps.GeocoderAddressComponent) =>
               component.types.includes('country')
