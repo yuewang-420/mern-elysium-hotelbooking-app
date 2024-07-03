@@ -96,7 +96,7 @@ const HotelDetail = () => {
             ))}
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] mt-2 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] space-y-4 lg:space-x-2 mt-2 mb-8">
           <span className="flex flex-col gap-2 pr-2">
             <h5 className="text-base md:text-lg text-neutral-700 font-semibold">
               Accommodation description

@@ -65,7 +65,7 @@ const SearchResultCard = ({ hotel }: SearchResultCardprops) => {
         </div>
 
         <div className="flex justify-between mt-4 items-end whitespace-nowrap">
-          <div className="flex flex-col gap-1">
+          <div className="flex basis-3/5 flex-col gap-1">
             <span className="flex flex-wrap gap-1">
               {expanded
                 ? hotel.facilities.map((facility, index) => (
@@ -96,7 +96,7 @@ const SearchResultCard = ({ hotel }: SearchResultCardprops) => {
               </span>
             )}
           </div>
-          <div className="flex flex-col">
+          <div className="flex basis-2/5 flex-col items-end">
             <p className="text-sm md:text-base font-semibold text-neutral-800 mb-1">
               ${hotel.pricePerNight} per night
             </p>
