@@ -51,7 +51,7 @@ const SearchResultCard = ({ hotel }: SearchResultCardprops) => {
           </div>
         </div>
 
-        <div className="flex justify-between mt-auto items-end whitespace-nowrap">
+        <div className="flex justify-between mt-6 md:mt-auto items-end whitespace-nowrap">
           <div className="flex flex-col gap-1">
             <span className="flex flex-wrap gap-1">
               {expanded

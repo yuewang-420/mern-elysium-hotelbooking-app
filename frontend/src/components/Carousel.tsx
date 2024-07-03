@@ -28,15 +28,13 @@ export default function Carousel({
   return (
     <div className="w-full h-full overflow-hidden relative">
       <div
-        className="flex flex-3 w-full h-full transition-transform ease-out duration-500"
+        className="flex flex-row w-full h-full transition-transform ease-out duration-500"
         style={{ transform: `translateX(-${curr * 100}%)` }}
       >
         {slides.map((slide) => (
-          <img
-            key={slide}
-            src={slide}
-            className="flex-1 object-cover self-center md:h-full"
-          />
+          <div key={slide} className="w-full h-full flex-shrink-0">
+            <img src={slide} className="w-full h-full object-cover" />
+          </div>
         ))}
       </div>
       {slides.length > 1 && (
