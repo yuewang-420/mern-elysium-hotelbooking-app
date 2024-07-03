@@ -41,13 +41,13 @@ export default function Carousel({
         <div className="absolute inset-0 flex items-center justify-between p-1">
           <button
             onClick={prev}
-            className="p-1 rounded-full shadow bg-white opacity-70 hover:opcaity-90"
+            className="p-1 rounded-full shadow bg-white opacity-50 hover:opacity-90  btn-transition"
           >
             <FiChevronLeft className="text-xs md:text-sm text-neutral-600" />
           </button>
           <button
             onClick={next}
-            className="p-1 rounded-full shadow bg-white opacity-70 hover:opcaity-90"
+            className="p-1 rounded-full shadow bg-white opacity-50 hover:opacity-90  btn-transition"
           >
             <FiChevronRight className="text-xs md:text-sm text-neutral-600" />
           </button>

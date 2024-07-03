@@ -8,7 +8,9 @@ const Layout = () => {
   const location = useLocation()
 
   const isHomePage = location.pathname === '/'
-  const isSearchPage = location.pathname.includes('/search')
+  const isSearchPage =
+    location.pathname.includes('/search') ||
+    location.pathname.includes('/detail')
 
   return (
     <div className="min-h-screen flex flex-col">

@@ -14,6 +14,9 @@ const HeaderDropDown = ({ options }: { options: Option[] }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const handleBtnClick = () => setIsExpanded(!isExpanded)
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  const userInfo = useAppSelector((state: RootState) => state.auth.userInfo)
+
   let timeoutId: NodeJS.Timeout
 
   // Check if user click outside the dropdown
@@ -48,7 +51,6 @@ const HeaderDropDown = ({ options }: { options: Option[] }) => {
       document.removeEventListener('click', handleClickOutside)
     }
   }, [isExpanded])
-  const userInfo = useAppSelector((state: RootState) => state.auth.userInfo)
 
   return (
     <div

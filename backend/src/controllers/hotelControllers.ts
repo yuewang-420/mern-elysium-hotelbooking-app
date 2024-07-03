@@ -1,7 +1,13 @@
 import { Request, Response } from 'express'
 import Hotel from '../models/hotelModel'
 import { HotelType, HotelSearchResponse } from '../shared/types'
+import checkUnexpectedFields, {
+  checkUnexpectedParams,
+} from './../utils/checkUnexpectedFields'
 
+// @desc    Get searched hotels
+// @route   GET /api/hotels/search?
+// @access  Public
 export const getHotelSearchResults = async (req: Request, res: Response) => {
   try {
     const query = constructSearchQuery(req.query)
@@ -42,6 +48,30 @@ export const getHotelSearchResults = async (req: Request, res: Response) => {
 
     return res.status(200).json(response)
   } catch (err) {
+    res
+      .status(500)
+      .json({ message: 'Something went wrong, please try again later...' })
+  }
+}
+// @desc    Get hotel by Id
+// @route   GET /api/hotels/:id
+// @access  Public
+export const getHotelById = async (req: Request, res: Response) => {
+  const unmatchedFieldErrors = checkUnexpectedFields(req, [])
+  if (unmatchedFieldErrors.length !== 0) {
+    return res.status(400).json({ message: unmatchedFieldErrors })
+  }
+
+  const unmatchedParamErrors = checkUnexpectedParams(req, ['hotelId'])
+  if (unmatchedParamErrors.length !== 0) {
+    return res.status(400).json({ message: unmatchedParamErrors })
+  }
+
+  try {
+    const id = req.params.hotelId.toString()
+    const hotel = await Hotel.findById(id)
+    res.json(hotel)
+  } catch (error) {
     res
       .status(500)
       .json({ message: 'Something went wrong, please try again later...' })

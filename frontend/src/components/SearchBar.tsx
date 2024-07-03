@@ -1,13 +1,14 @@
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MdTravelExplore } from 'react-icons/md'
 import Button from './Button'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { useEffect } from 'react'
 import { FaMagnifyingGlass, FaArrowRotateLeft } from 'react-icons/fa6'
+import { useAppDispatch, useAppSelector, RootState } from '../store'
+import { setSearchState, clearSearchState } from '../slices/searchSlice'
 
 const searchSchema = z.object({
   destination: z.string().optional(),
@@ -21,39 +22,44 @@ type SearchFormValues = z.infer<typeof searchSchema>
 
 const SearchBar: React.FC = () => {
   const navigate = useNavigate()
-  const location = useLocation()
-
   const [searchParams, setSearchParams] = useSearchParams()
+  const dispatch = useAppDispatch()
+  const search = useAppSelector((state: RootState) => state.search)
 
-  // Params only valid under /search routes
-  useEffect(() => {
-    const hasSearchParams = Array.from(searchParams.entries()).length > 0
-    const isNotSearchPage = location.pathname !== '/search'
-
-    if (hasSearchParams && isNotSearchPage) {
-      setSearchParams({})
-      navigate('/')
-    }
-  }, [location, searchParams, navigate])
-
-  const { register, control, handleSubmit, reset } = useForm<SearchFormValues>({
-    resolver: zodResolver(searchSchema),
-    defaultValues: {
-      destination: searchParams.get('destination') || undefined,
-      checkIn: searchParams.get('checkIn')
-        ? new Date(searchParams.get('checkIn') as string)
-        : undefined,
-      checkOut: searchParams.get('checkOut')
-        ? new Date(searchParams.get('checkOut') as string)
-        : undefined,
-      adultCount: searchParams.get('adultCount')
-        ? parseInt(searchParams.get('adultCount') as string)
-        : undefined,
-      childCount: searchParams.get('childCount')
-        ? parseInt(searchParams.get('childCount') as string)
-        : undefined,
-    },
-  })
+  const { register, control, handleSubmit, setValue, watch } =
+    useForm<SearchFormValues>({
+      resolver: zodResolver(searchSchema),
+      defaultValues: {
+        destination:
+          searchParams.get('destination') ||
+          (search.destination as string) ||
+          undefined,
+        checkIn:
+          (searchParams.get('checkIn')
+            ? new Date(searchParams.get('checkIn') as string)
+            : undefined) ||
+          (search.checkIn ? new Date(search.checkIn as string) : undefined),
+        checkOut:
+          (searchParams.get('checkOut')
+            ? new Date(searchParams.get('checkOut') as string)
+            : undefined) ||
+          (search.checkOut ? new Date(search.checkOut as string) : undefined),
+        adultCount:
+          (searchParams.get('adultCount')
+            ? parseInt(searchParams.get('adultCount') as string)
+            : undefined) ||
+          (search.adultCount
+            ? parseInt(search.adultCount as string)
+            : undefined),
+        childCount:
+          (searchParams.get('childCount')
+            ? parseInt(searchParams.get('childCount') as string)
+            : undefined) ||
+          (search.childCount
+            ? parseInt(search.childCount as string)
+            : undefined),
+      },
+    })
 
   const onSearchFormSubmit = handleSubmit((data: SearchFormValues) => {
     // Create a URLSearchParams object
@@ -70,20 +76,27 @@ const SearchBar: React.FC = () => {
       queryParams.append('childCount', data.childCount.toString())
 
     navigate(`/search?${queryParams}`)
+    dispatch(
+      setSearchState({
+        destination: data?.destination,
+        checkIn: data.checkIn?.toISOString(),
+        checkOut: data.checkOut?.toISOString(),
+        adultCount: data.adultCount?.toString(),
+        childCount: data.childCount?.toString(),
+      })
+    )
   })
 
   const handleClear = () => {
-    reset({
-      destination: undefined,
-      checkIn: undefined,
-      checkOut: undefined,
-      adultCount: undefined,
-      childCount: undefined,
-    })
     setSearchParams({})
-    if (location.pathname.includes('search')) {
-      window.location.reload()
-    }
+
+    setValue('destination', undefined)
+    setValue('checkIn', undefined)
+    setValue('checkOut', undefined)
+    setValue('adultCount', undefined)
+    setValue('childCount', undefined)
+
+    dispatch(clearSearchState())
   }
 
   const minDate = new Date()
@@ -146,7 +159,7 @@ const SearchBar: React.FC = () => {
                   selectsStart
                   startDate={field.value}
                   minDate={minDate}
-                  maxDate={maxDate}
+                  maxDate={watch('checkOut')}
                   placeholderText="Check-in Date"
                   className="w-full bg-white p-2 focus:outline-none"
                   wrapperClassName="w-full"
@@ -164,7 +177,7 @@ const SearchBar: React.FC = () => {
                   onChange={(date) => field.onChange(date)}
                   selectsStart
                   startDate={field.value}
-                  minDate={minDate}
+                  minDate={watch('checkIn')}
                   maxDate={maxDate}
                   placeholderText="Check-out Date"
                   className="w-full bg-white p-2 focus:outline-none"

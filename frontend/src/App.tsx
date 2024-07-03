@@ -14,6 +14,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useAppSelector, RootState } from './store'
 import HotelDetail from './pages/HotelDetail'
+import HotelBooking from './pages/HotelBooking'
 
 function App() {
   const userInfo = useAppSelector((state: RootState) => state.auth?.userInfo)
@@ -25,6 +26,9 @@ function App() {
             <Route index element={<Homepage />} />
             <Route path="search" element={<SearchResults />} />
             <Route path="detail/:hotelId" element={<HotelDetail />} />
+            {userInfo && (
+              <Route path="hotel/:hotelId/booking" element={<HotelBooking />} />
+            )}
             <Route path="user">
               <Route index element={<Navigate to="/" />} />
               <Route path="register" element={<Register />} />
@@ -40,7 +44,9 @@ function App() {
                 element={<VerifyEmail />}
               />
               {userInfo && (
-                <Route path="manage-account/*" element={<ManageAccount />} />
+                <>
+                  <Route path="manage-account/*" element={<ManageAccount />} />
+                </>
               )}
             </Route>
             {userInfo && (

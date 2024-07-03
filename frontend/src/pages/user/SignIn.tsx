@@ -10,7 +10,7 @@ import { AiOutlineMail } from 'react-icons/ai'
 import { RiLockPasswordLine } from 'react-icons/ri'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAppDispatch } from '../../store'
 import { toast } from 'react-toastify'
 import { setCredentials } from '../../slices/authSlice'
@@ -49,6 +49,7 @@ const SignIn = () => {
   })
 
   const navigate = useNavigate()
+  const location = useLocation()
   const dispatch = useAppDispatch()
 
   const authMutation = useMutation({
@@ -57,11 +58,18 @@ const SignIn = () => {
     onSuccess: async (data) => {
       dispatch(setCredentials(data))
       navigate('/')
+      toast(`🎉 Welcome onboard ${data.firstName}`)
       confetti({
         particleCount: 200,
         spread: 120,
         gravity: 0.75,
       })
+      if (typeof location.state?.from === 'string') {
+        toast.info(`You will be redirected to the last page in seconds.`)
+        setTimeout(() => {
+          navigate(location.state.from)
+        }, 6000)
+      }
     },
     onError: async (err: Error, data: SignInFormData) => {
       if (err.message === 'Your email has not been verified yet.') {
