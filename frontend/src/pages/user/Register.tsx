@@ -109,7 +109,7 @@ const Register = () => {
   return (
     <section className="custom-container">
       <form
-        className="form-container flex flex-col md:gap-4 gap-6 my-12 py-6 shadow rounded-md"
+        className="form-container flex flex-col md:gap-4 gap-6 my-12 py-6 shadow shadow-neutral-200 rounded-md"
         onSubmit={onRegisterFormSubmit}
       >
         <h2 className="text-xl md:text-3xl font-semibold text-neutral-800 pb-4">

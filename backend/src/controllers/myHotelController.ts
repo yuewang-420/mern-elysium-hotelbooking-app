@@ -21,6 +21,7 @@ const myHotelRoutesAllowedKeys: { [key: string]: { [key: string]: string[] } } =
         'adultCount',
         'childCount',
         'pricePerNight',
+        'imageUrls',
       ],
     },
     GET: { '/': [] },
@@ -147,8 +148,12 @@ export const updateMyHotelById = async (req: Request, res: Response) => {
     'childCount',
     'pricePerNight',
     'imageUrls',
+    'imageFiles',
   ]
-  const unmatchedFieldErrors = checkUnexpectedFields(req, allowedKeys)
+  const unmatchedFieldErrors = checkUnexpectedFields(
+    req,
+    req.files ? allowedKeys : allowedKeys.filter((key) => key !== 'imageFiles')
+  )
   if (unmatchedFieldErrors.length !== 0) {
     return res.status(400).json({ message: unmatchedFieldErrors })
   }

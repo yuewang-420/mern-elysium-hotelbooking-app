@@ -121,6 +121,15 @@ const myHotelValidations: ValidationFunctions = {
         )
       }
     }),
+  imageFiles: check('imageFiles')
+    .optional()
+    .custom((value) => {
+      if (typeof value === 'string' && value === 'EMPTY_ARRAY') {
+        return true
+      } else if (Array.isArray(value)) {
+        return true
+      }
+    }),
 }
 
 /**

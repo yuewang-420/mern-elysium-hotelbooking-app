@@ -26,3 +26,12 @@ export type HotelType = {
   city: string
   country: string
 }
+
+export type HotelSearchResponse = {
+  data: HotelType[]
+  pagination: {
+    totalHotelNum: number
+    page: number
+    pages: number
+  }
+}

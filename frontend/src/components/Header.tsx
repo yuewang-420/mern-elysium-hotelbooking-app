@@ -1,12 +1,11 @@
 import Logo from './Logo'
 import Button from './Button'
 import { useAppSelector, useAppDispatch, RootState } from '../store'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import * as apiClient from '../api-client'
 import { toast } from 'react-toastify'
 import { clearCredentials } from '../slices/authSlice'
-import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import HeaderDropDown from './HeaderDropDown'
 import { MdOutlineLogout } from 'react-icons/md'
@@ -15,8 +14,12 @@ const Header = () => {
   const navigate = useNavigate()
   const userInfo = useAppSelector((state: RootState) => state.auth?.userInfo)
   const dispatch = useAppDispatch()
+  const location = useLocation()
 
-  const path = useLocation().pathname
+  const [path, setPath] = useState<string>('/')
+  useEffect(() => {
+    setPath(location.pathname)
+  }, [location.pathname])
 
   const logoutMutation = useMutation({
     mutationFn: apiClient.signOut,
@@ -77,8 +80,8 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky top-0 py-6 px-6 bg-neutral-50 z-50 transition-all duration-500 ease-in-out hover:opacity-100 ${
-        isScrolled ? 'opacity-25' : 'bg-neutral-50'
+      className={`sticky top-0 py-3 px-6 bg-neutral-50 z-50 transition-all duration-500 ease-in-out hover:opacity-100 ${
+        isScrolled ? 'opacity-25' : ''
       }`}
     >
       <div className="custom-container justify-between">

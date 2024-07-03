@@ -56,7 +56,6 @@ const EditHotel = () => {
           hotel={hotel}
           onSave={handleSave}
           isPending={isPending}
-          imageUrls={hotel.imageUrls}
         />
       )}
     </section>

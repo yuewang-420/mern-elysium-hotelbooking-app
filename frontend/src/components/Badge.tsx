@@ -10,7 +10,9 @@ const Badge = ({
   badgeInfo,
 }: BadgeProps) => {
   return (
-    <span className={`${bgColor} ${textColor} text-xs px-2 py-1 rounded`}>
+    <span
+      className={`${bgColor} ${textColor} text-xs px-2 py-1 rounded whitespace-nowrap`}
+    >
       {badgeInfo}
     </span>
   )

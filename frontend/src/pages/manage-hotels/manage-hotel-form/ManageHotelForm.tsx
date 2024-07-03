@@ -90,7 +90,6 @@ type ManageHotelFormProps = {
   hotel?: HotelType
   onSave: (hotelFormData: FormData) => void
   isPending: boolean
-  imageUrls?: string[]
 }
 
 export type ManageHotelFormData = z.infer<typeof manageHotelSchema>
@@ -99,46 +98,46 @@ const ManageHotelForm = ({
   hotel,
   onSave,
   isPending,
-  imageUrls,
 }: ManageHotelFormProps) => {
   const [currentStep, setCurrentStep] = useState<number>(1)
+  const [defaultHotelValues, setDefaultHotelValues] = useState(hotel || {})
+
+  useEffect(() => {
+    setDefaultHotelValues(hotel || {})
+  }, [hotel])
 
   const formMethods = useForm<ManageHotelFormData>({
     resolver: zodResolver(manageHotelSchema),
-    defaultValues: {},
+    defaultValues: defaultHotelValues,
   })
 
   const {
     trigger,
     handleSubmit,
-    reset,
     watch,
     formState: { dirtyFields },
   } = formMethods
 
-  useEffect(() => {
-    reset(hotel)
-  }, [hotel, reset])
-
-  const [isFormChanged, setIsFormChanged] = useState<boolean>(
-    Object.keys(dirtyFields).length > 0
-  )
-
-  useEffect(() => {
-    if (
-      hotel &&
-      (JSON.stringify(hotel.imageUrls) !== JSON.stringify(watch('imageUrls')) ||
-        watch('imageFiles') instanceof FileList)
-    ) {
-      setIsFormChanged(true)
-    }
-  }, [watch('imageFiles'), watch('imageUrls')])
-
+  const [isFormChanged, setIsFormChanged] = useState<boolean>(false)
   const stepFields = [
     ['name', 'starRating', 'type', 'facilities', 'description'],
     ['streetAddress', 'city', 'country'],
     ['roomNumber', 'adultCount', 'childCount', 'pricePerNight'],
+    ['imageUrls', 'imageFiles'],
   ]
+
+  useEffect(() => {
+    const isUrlsChanges = hotel
+      ? JSON.stringify(hotel.imageUrls) !== JSON.stringify(watch('imageUrls'))
+      : false
+    const isUploadedImages =
+      watch('imageFiles') && watch('imageFiles').length !== 0
+    setIsFormChanged(
+      Object.keys(dirtyFields).length > 0 || isUrlsChanges || isUploadedImages
+    )
+
+    console.log(watch(['imageUrls', 'imageFiles']))
+  }, [hotel && watch(), dirtyFields])
 
   const stepFormDescription = ['Basic', 'Address', 'Room', 'Images']
 
@@ -198,10 +197,12 @@ const ManageHotelForm = ({
       manageHotelFormData.imageFiles.length !== 0
     ) {
       ;(Array.from(manageHotelFormData.imageFiles) as File[]).forEach(
-        (imageFile) => {
+        (imageFile: File) => {
           formData.append(`imageFiles`, imageFile)
         }
       )
+    } else {
+      formData.append('imageFiles', 'EMPTY_ARRAY')
     }
 
     onSave(formData)
@@ -226,7 +227,7 @@ const ManageHotelForm = ({
           {currentStep === 1 && <BasicInformation />}
           {currentStep === 2 && <AddressInformation />}
           {currentStep === 3 && <GuestRoomInformation />}
-          {currentStep === 4 && <UploadImages initialImageUrls={imageUrls} />}
+          {currentStep === 4 && <UploadImages />}
         </form>
         <span
           className={`flex flex-row mt-4 ${

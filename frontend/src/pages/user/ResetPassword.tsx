@@ -137,7 +137,7 @@ const ResetPassword = () => {
   return (
     <section className="custom-container">
       <form
-        className="form-container flex flex-col gap-4 my-12 py-6 shadow rounded-md"
+        className="form-container flex flex-col gap-4 my-12 py-6 shadow shadow-neutral-200 rounded-md"
         onSubmit={onResetPasswordSubmit}
       >
         {verifyMutation.isPending && (

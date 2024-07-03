@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import rateLimit from 'express-rate-limit'
 import userRoutes from './routes/userRoutes'
 import myHotelRoutes from './routes/myHotelRoutes'
+import hotelRoutes from './routes/hotelRoutes'
 import { notFound, errorHandler } from './middleware/errorMiddleware'
 import path from 'path'
 import { v2 as cloudinary } from 'cloudinary'
@@ -50,6 +51,7 @@ app.use(express.static(path.join(__dirname, '../../frontend/dist')))
 
 app.use('/api/users', userRoutes)
 app.use('/api/my-hotels', verifyToken, myHotelRoutes)
+app.use('/api/hotels', hotelRoutes)
 
 // Route all other requests to React's index.html
 app.get('*', (req, res) => {

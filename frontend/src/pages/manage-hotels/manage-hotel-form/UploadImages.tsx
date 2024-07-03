@@ -12,11 +12,7 @@ type FilePreview = {
   isRemote?: boolean
 }
 
-type UploadImagesProps = {
-  initialImageUrls?: string[]
-}
-
-const UploadImages = ({ initialImageUrls }: UploadImagesProps) => {
+const UploadImages = () => {
   const {
     register,
     setValue,
@@ -28,18 +24,18 @@ const UploadImages = ({ initialImageUrls }: UploadImagesProps) => {
   const existingImageUrls = watch('imageUrls')
 
   useEffect(() => {
-    if (initialImageUrls && initialImageUrls.length > 0) {
-      const initialPreviews = initialImageUrls.map((url) => ({
+    if (existingImageUrls && existingImageUrls.length > 0) {
+      const initialPreviews = existingImageUrls.map((url: string) => ({
         previewUrl: url,
         isRemote: true,
       }))
       setFilePreviews(initialPreviews)
     }
-  }, [initialImageUrls])
+  }, [existingImageUrls])
 
   useEffect(() => {
     sessionStorage.setItem('filePreviews', JSON.stringify(filePreviews))
-  }, [filePreviews])
+  }, [JSON.stringify(filePreviews)])
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {

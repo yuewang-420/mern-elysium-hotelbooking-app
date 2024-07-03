@@ -57,7 +57,6 @@ const SignIn = () => {
     onSuccess: async (data) => {
       dispatch(setCredentials(data))
       navigate('/')
-      toast(`🎉 Welcome onboard ${data.firstName}`)
       confetti({
         particleCount: 200,
         spread: 120,
@@ -92,7 +91,7 @@ const SignIn = () => {
   return (
     <section className="custom-container">
       <form
-        className="form-container flex flex-col gap-6 my-12 py-6 shadow rounded-md flex-grow"
+        className="form-container flex flex-col gap-6 my-12 py-6 shadow shadow-neutral-200 rounded-md flex-grow"
         onSubmit={onSignInFormSumit}
       >
         <h2 className="text-xl md:text-3xl font-semibold text-neutral-800 pb-4">
@@ -145,9 +144,9 @@ const SignIn = () => {
               to="../register"
             >
               Register
-            </Link>{' '}
+            </Link>
             here.
-          </p>{' '}
+          </p>
           <Link
             className="text-sm font-medium text-blue-600 underline hover:opacity-50 btn-transition"
             to="../forgot-password"

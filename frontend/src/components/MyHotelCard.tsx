@@ -52,10 +52,9 @@ const MyHotelCard = ({ hotel }: MyHotelCardProps) => {
           {hotel.starRating} stars
         </span>
       </div>
-      <span className="flex flex-col justify-center gap-2 md:flex-row md:justify-between md:gap-0">
-        <Button>Detail page</Button>
+      <span className="flex flex-col self-end">
         <Button onClick={() => navigate(`../edit-hotel/${hotel._id}`)}>
-          Edit
+          Edit this hotel
         </Button>
       </span>
     </div>

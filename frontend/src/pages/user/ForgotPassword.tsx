@@ -46,7 +46,7 @@ const ForgotPassword = () => {
   return (
     <section className="custom-container">
       <form
-        className="form-container flex flex-col gap-4 my-12 py-6 shadow rounded-md"
+        className="form-container flex flex-col gap-4 my-12 py-6 shadow shadow-neutral-200 rounded-md"
         onSubmit={onForgotPasswordFormSubmit}
       >
         <h2 className="text-2xl md:text-3xl font-semibold text-neutral-800">

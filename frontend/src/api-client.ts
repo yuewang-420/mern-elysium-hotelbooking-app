@@ -2,7 +2,7 @@ import { RegFormData } from './pages/user/Register'
 import { SignInFormData } from './pages/user/SignIn'
 import { ForgotPasswordFormData } from './pages/user/ForgotPassword'
 import { UpdateProfileFormData } from './pages/user/PersonalDetails'
-import { HotelType } from '../../backend/src/shared/types'
+import { HotelType, HotelSearchResponse } from '../../backend/src/shared/types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 
@@ -329,6 +329,22 @@ export const updateMyHotelById = async (
       credentials: 'include',
       body: updateHotelFormData,
     }
+  )
+
+  const body = await res.json()
+
+  if (!res.ok) {
+    throw new Error(body.message)
+  }
+
+  return body
+}
+
+export const getSearchHotels = async (
+  searchParams: URLSearchParams
+): Promise<HotelSearchResponse> => {
+  const res = await fetch(
+    `${API_BASE_URL}/api/hotels/search?${searchParams.toString()}`
   )
 
   const body = await res.json()

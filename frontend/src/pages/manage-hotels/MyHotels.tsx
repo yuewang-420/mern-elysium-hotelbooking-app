@@ -38,7 +38,7 @@ const MyHotels = () => {
       {isSuccess && myHotelData.length > 0 && (
         <div className="flex flex-col gap-6 w-full pt-4">
           {myHotelData.map((hotel) => (
-            <MyHotelCard hotel={hotel} />
+            <MyHotelCard hotel={hotel} key={hotel._id} />
           ))}
         </div>
       )}
