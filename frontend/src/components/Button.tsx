@@ -42,7 +42,7 @@ const Button = ({
       {Icon && (
         <span
           className={`${
-            isPureIconButton ? 'px-2 py-1' : 'mr-2'
+            isPureIconButton ? 'px-6' : 'mr-2'
           } text-base md:text-lg items-center`}
         >
           {<Icon />}

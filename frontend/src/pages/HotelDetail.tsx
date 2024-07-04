@@ -84,7 +84,7 @@ const HotelDetail = () => {
           <h5 className="text-base md:text-lg text-neutral-700 font-semibold">
             Facilities
           </h5>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 drop-shadow shadow-neutral-200">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 drop-shadow shadow-neutral-200">
             {hotel.facilities.map((facility) => (
               <Badge
                 key={`${hotel._id}_${facility}`}

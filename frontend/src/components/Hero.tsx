@@ -1,7 +1,7 @@
 const Hero = () => {
   return (
-    <section className="px-6 pt-4 pb-8 bg-neutral-50">
-      <div className="custom-container flex-col gap-4">
+    <section className="px-6 pt-4 pb-12 lg:pb-16 bg-neutral-100">
+      <div className="custom-container flex-col gap-2">
         <h1 className="text-2xl md:text-4xl font-semibold text-neutral-800">
           Book your dream stay
         </h1>

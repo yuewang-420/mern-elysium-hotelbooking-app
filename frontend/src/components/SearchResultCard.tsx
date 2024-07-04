@@ -24,8 +24,8 @@ const SearchResultCard = ({ hotel }: SearchResultCardprops) => {
         <Carousel slides={hotel.imageUrls} />
       </div>
       <div className="flex flex-col flex-wrap">
-        <div>
-          <div className="flex flex-col gap-2 md:gap-0 md:flex-row md:justify-between md:items-center">
+        <div className="flex flex-col gap-0.5 mb-4">
+          <div className="flex flex-col gap-3 md:gap-0 md:flex-row md:justify-between md:items-center">
             <span className="flex items-center">
               {Array.from({ length: hotel.starRating }).map((_, index) => (
                 <FaStar
@@ -59,14 +59,15 @@ const SearchResultCard = ({ hotel }: SearchResultCardprops) => {
           </p>
         </div>
         <div>
-          <div className="text-sm md:text-base font-medium text-neutral-700 line-clamp-3 md:line-clamp-4 2xl:line-clamp-4">
+          <div className="text-xs md:text-sm font-normal text-neutral-700 line-clamp-3 md:line-clamp-4 2xl:line-clamp-4">
+            {/* TODO: modify line height*/}
             {hotel.description}
           </div>
         </div>
 
-        <div className="flex justify-between mt-4 items-end whitespace-nowrap">
-          <div className="flex basis-3/5 flex-col gap-1">
-            <span className="flex flex-wrap gap-1">
+        <div className="flex flex-col gap-2 sm:flex-row sm:justify-between mt-4 sm:mt-6 items-end sm:items-start whitespace-nowrap">
+          <div className="flex basis-3/5 flex-col gap-1 items-start">
+            <span className="w-full flex flex-wrap-reverse sm:flex-wrap gap-1 itemds-end self-end sm:self-start">
               {expanded
                 ? hotel.facilities.map((facility, index) => (
                     <Badge
@@ -89,18 +90,18 @@ const SearchResultCard = ({ hotel }: SearchResultCardprops) => {
             </span>
             {hotel.facilities.length > 3 && (
               <span
-                className="text-xs text-neutral-700 tracking-tighter cursor-pointer hover:opacity-25 hover: btn-transition drop-shadow-sm"
+                className="text-xs self-end sm:self-start text-neutral-700 tracking-tighter cursor-pointer hover:opacity-25 hover: btn-transition drop-shadow-sm"
                 onClick={toggleExpand}
               >
                 {expanded ? `- Less` : `+${hotel.facilities.length - 3} more`}
               </span>
             )}
           </div>
-          <div className="flex basis-2/5 flex-col items-end">
+          <div className="flex basis-2/5 flex-col sm:items-end">
             <p className="text-sm md:text-base font-semibold text-neutral-800 mb-1">
               ${hotel.pricePerNight} per night
             </p>
-            <span className="self-end">
+            <span className="self-start sm:self-end">
               <Button
                 onClick={() => navigate(`/detail/${hotel._id}`)}
                 textColor="text-white"

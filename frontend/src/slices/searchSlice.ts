@@ -53,7 +53,6 @@ const searchSlice = createSlice({
             : Number(childCount).toString()
           : null
 
-      // sessionStorage.removeItem('searchState')
       sessionStorage.setItem('searchState', JSON.stringify(state))
     },
     clearSearchState() {

@@ -7,7 +7,7 @@ body {
 }
 
 .custom-container {
-  @apply md:container xl:max-w-5xl mx-auto flex px-12;
+  @apply md:container xl:max-w-5xl mx-auto flex px-4 sm:px-6 md:px-12;
 }
 
 .form-container {

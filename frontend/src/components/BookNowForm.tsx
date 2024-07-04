@@ -55,10 +55,6 @@ const BookNowForm = ({
   const maxDate = new Date()
   maxDate.setFullYear(maxDate.getFullYear() + 1)
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    event.preventDefault()
-  }
-
   const onSignInClick = (data: GuestInfoFormData) => {
     dispatch(
       setSearchState({
@@ -166,16 +162,20 @@ const BookNowForm = ({
               />
             </span>
           </div>
-          <span className="col-span-2 flex gap-3">
+          <span className="col-span-2 w-full flex gap-3">
             <label className="w-full text-sm md:text-base font-medium bg-white px-2 py-1 text-neutral-700 items-center flex">
               Adult:
               <input
                 className="w-full p-1 focus:outline-none text-sm md:text-base font-medium text-neutral-700"
                 type="number"
                 placeholder="count"
+                step="1"
                 min={1}
                 max={maxAdultCount}
-                onKeyDown={handleKeyDown}
+                onInput={(e) => {
+                  const target = e.target as HTMLInputElement
+                  target.value = target.value.replace(/[^0-9]/g, '')
+                }}
                 {...register('adultCount', {
                   required: 'Adult count is required',
                   min: {
@@ -196,9 +196,13 @@ const BookNowForm = ({
                 className="w-full p-1 focus:outline-none text-sm md:text-base font-medium text-neutral-700"
                 type="number"
                 placeholder="count"
+                step="1"
                 min={0}
                 max={maxChildCount}
-                onKeyDown={handleKeyDown}
+                onInput={(e) => {
+                  const target = e.target as HTMLInputElement
+                  target.value = target.value.replace(/[^0-9]/g, '')
+                }}
                 {...register('childCount', {
                   min: {
                     value: 0,

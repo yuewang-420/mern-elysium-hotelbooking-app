@@ -80,8 +80,8 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky top-0 py-3 px-6 bg-neutral-50 z-50 transition-all duration-500 ease-in-out hover:opacity-100 ${
-        isScrolled ? 'opacity-15' : ''
+      className={`sticky top-0 py-3 px-6 bg-neutral-100 z-50 transition-all duration-500 ease-in-out hover:opacity-100 ${
+        isScrolled ? 'lg:opacity-25' : ''
       }`}
     >
       <div className="custom-container justify-between">

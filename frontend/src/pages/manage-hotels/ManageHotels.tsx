@@ -40,7 +40,7 @@ const ManageHotels = () => {
   return (
     <div className="custom-container py-6 w-full justify-center md:justify-between items-center md:items-start flex flex-col md:flex-row">
       <SideMenu sideMenuItems={sideMenuItems} />
-      <div className="w-full md:w-4/5 flex justify-start">
+      <div className="customer-container md:w-4/5 flex justify-start">
         <ManageHotelsContent />
       </div>
     </div>
