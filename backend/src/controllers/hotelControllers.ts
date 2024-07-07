@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import Hotel from '../models/hotelModel'
 import Booking from '../models/bookingModel'
-import { HotelType, HotelSearchResponse, BookingType } from '../shared/types'
+import { HotelType, HotelSearchResponse } from '../shared/types'
+import { BookingType } from '../models/bookingModel'
 import checkUnexpectedFields, {
   checkUnexpectedParams,
 } from './../utils/checkUnexpectedFields'
