@@ -1,5 +1,3 @@
-import { Schema } from 'mongoose'
-
 // TypeScript definition for the User object
 export type UserType = {
   _id: string
@@ -40,7 +38,7 @@ export type BookingType = {
   checkIn: Date
   checkOut: Date
   totalCost: number
-  hotel: Schema.Types.ObjectId
+  hotel: string // hotel Id
 }
 
 export type HotelSearchResponse = {
