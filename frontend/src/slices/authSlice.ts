@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 // Define types for auth slice
-type UserInfo = {
+export type UserInfo = {
   id: string
   email: string
   firstName: string

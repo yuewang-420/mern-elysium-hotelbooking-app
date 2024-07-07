@@ -2,7 +2,14 @@ import { RegFormData } from './pages/user/Register'
 import { SignInFormData } from './pages/user/SignIn'
 import { ForgotPasswordFormData } from './pages/user/ForgotPassword'
 import { UpdateProfileFormData } from './pages/user/PersonalDetails'
-import { HotelType, HotelSearchResponse } from '../../backend/src/shared/types'
+import { PaymentIntentResponse } from '../../backend/src/shared/types'
+import { BookingFormData } from './components/BookingForm'
+import { FeedbackFormData } from './pages/user/Feedback'
+import {
+  UserType,
+  HotelType,
+  HotelSearchResponse,
+} from '../../backend/src/shared/types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 
@@ -13,6 +20,16 @@ export class FetchError extends Error {
     super(message)
     this.body = body
   }
+}
+
+type ExcludeDateInterval = {
+  start: string
+  end: string
+}
+
+type FetchHotelByIdResponse = {
+  hotel: HotelType
+  excludeDateIntervals: ExcludeDateInterval[]
 }
 
 export const register = async (data: RegFormData) => {
@@ -232,7 +249,7 @@ export const resetPassword = async (data: {
 }
 
 // Not completed feature
-export const getProfile = async () => {
+export const getProfile = async (): Promise<UserType> => {
   const res = await fetch(`${API_BASE_URL}/api/users/profile`, {
     method: 'GET',
     credentials: 'include',
@@ -250,6 +267,25 @@ export const getProfile = async () => {
 export const updateProfile = async (data: UpdateProfileFormData) => {
   const res = await fetch(`${API_BASE_URL}/api/users/profile`, {
     method: 'PUT',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+
+  const body = await res.json()
+
+  if (!res.ok) {
+    throw new Error(body.message)
+  }
+
+  return body
+}
+
+export const sendFeedback = async (data: FeedbackFormData) => {
+  const res = await fetch(`${API_BASE_URL}/api/users/feedback`, {
+    method: 'POST',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
@@ -356,7 +392,9 @@ export const getSearchHotels = async (
   return body
 }
 
-export const fetchHotelById = async (hotelId: string): Promise<HotelType> => {
+export const fetchHotelById = async (
+  hotelId: string
+): Promise<FetchHotelByIdResponse> => {
   const res = await fetch(`${API_BASE_URL}/api/hotels/${hotelId}`, {
     method: 'GET',
     credentials: 'include',
@@ -369,4 +407,96 @@ export const fetchHotelById = async (hotelId: string): Promise<HotelType> => {
   }
 
   return body
+}
+
+export const createPaymentIntent = async (
+  hotelId: string,
+  nightNum: number
+): Promise<PaymentIntentResponse> => {
+  const res = await fetch(
+    `${API_BASE_URL}/api/hotels/${hotelId}/bookings/payment-intent`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify({ nightNum }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+
+  const body = await res.json()
+
+  if (!res.ok) {
+    throw new Error(body.message)
+  }
+
+  return body
+}
+
+export const createBooking = async (formData: BookingFormData) => {
+  const res = await fetch(
+    `${API_BASE_URL}/api/hotels/${formData.hotelId}/bookings`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(formData),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+
+  const body = await res.json()
+
+  if (!res.ok) {
+    throw new Error(body.message)
+  }
+
+  return body
+}
+
+export const fetchMyBookings = async () => {
+  const res = await fetch(`${API_BASE_URL}/api/my-bookings`, {
+    method: 'GET',
+    credentials: 'include',
+  })
+
+  const body = await res.json()
+
+  if (!res.ok) {
+    throw new Error(body.message)
+  }
+
+  return body
+}
+
+export const fetchLatestUpdatedHotels = async (): Promise<HotelType[]> => {
+  const res = await fetch(`${API_BASE_URL}/api/hotels/latest`, {
+    method: 'GET',
+    credentials: 'include',
+  })
+
+  const body = await res.json()
+
+  if (!res.ok) {
+    throw new Error(body.message)
+  }
+
+  return body as HotelType[]
+}
+
+export const fetchMostPopularHotels = async (): Promise<HotelType[]> => {
+  const res = await fetch(`${API_BASE_URL}/api/hotels/popular`, {
+    method: 'GET',
+    credentials: 'include',
+  })
+
+  const body = await res.json()
+
+  if (!res.ok) {
+    throw new Error(body.message)
+  }
+
+  return body as HotelType[]
 }

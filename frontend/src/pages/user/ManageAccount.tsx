@@ -1,13 +1,13 @@
 import SideMenu from '../../components/SideMenu'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import PersonalDetails from './PersonalDetails'
-import PaymentMethods from './PaymentMethods'
+import Feedback from './Feedback'
 import NotFound from '../NotFound'
 
 const ManageAccount = () => {
   const sideMenuItems = [
     { title: 'Personal details', path: 'personal-details' },
-    { title: 'Payment methods', path: 'payment-methods' },
+    { title: 'Feedbacks', path: 'feedback' },
   ]
 
   return (
@@ -26,7 +26,7 @@ const ManageAccountContent = () => {
       <Routes>
         <Route index element={<Navigate to="personal-details" />} />
         <Route path="personal-details" element={<PersonalDetails />} />
-        <Route path="payment-methods" element={<PaymentMethods />} />
+        <Route path="feedback" element={<Feedback />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

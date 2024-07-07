@@ -1,6 +1,6 @@
 import { HotelType } from '../../../backend/src/shared/types'
 import Button from './Button'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import {
   FaMapLocation,
   FaBuilding,
@@ -18,9 +18,12 @@ const MyHotelCard = ({ hotel }: MyHotelCardProps) => {
   const navigate = useNavigate()
   return (
     <div className="flex flex-col justify-between w-full border border-neutral-200 rounded px-8 py-6 gap-4">
-      <h2 className="text-lg md:text-xl font-bold text-neutral-700">
+      <Link
+        className="text-lg md:text-xl font-bold text-neutral-800 cursor-pointer hover:opacity-25 hover: btn-transition"
+        to={`/detail/${hotel._id}`}
+      >
         {hotel.name}
-      </h2>
+      </Link>
       <p className="text-sm md:text-base font-normal text-neutral-700 whitespace-pre-line line-clamp-3">
         {hotel.description}
       </p>

@@ -12,6 +12,7 @@ import {
   resetPassword,
   getUserProfile,
   updateUserProfile,
+  sendUserFeedbackEmail,
 } from '../controllers/userController'
 
 const router = express.Router()
@@ -39,6 +40,9 @@ router.post('/forgot-password', sendResetLink)
 
 // POST   Verify the password link
 router.post('/reset-password', verifyResetLink)
+
+// POST   Send feedback email
+router.post('/feedback', verifyToken, sendUserFeedbackEmail)
 
 // PUT    Update/reset the user password
 router.put('/reset-password', resetPassword)

@@ -11,6 +11,7 @@ const Layout = () => {
   const isSearchPage =
     location.pathname.includes('/search') ||
     location.pathname.includes('/detail')
+  const isBookingPage = location.pathname.includes('/booking')
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -21,6 +22,7 @@ const Layout = () => {
           <SearchBar />
         </>
       )}
+      {isBookingPage && <Hero />}
       <div className="flex-1 my-auto">
         <Outlet />
       </div>

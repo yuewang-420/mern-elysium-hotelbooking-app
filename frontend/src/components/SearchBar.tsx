@@ -1,14 +1,14 @@
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom'
 import { MdTravelExplore } from 'react-icons/md'
 import Button from './Button'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { FaMagnifyingGlass } from 'react-icons/fa6'
+import { FaMagnifyingGlass, FaArrowRotateLeft } from 'react-icons/fa6'
 import { useAppDispatch, useAppSelector, RootState } from '../store'
-import { setSearchState } from '../slices/searchSlice'
+import { setSearchState, clearSearchState } from '../slices/searchSlice'
 
 const searchSchema = z.object({
   destination: z.string().optional(),
@@ -22,7 +22,9 @@ type SearchFormValues = z.infer<typeof searchSchema>
 
 const SearchBar: React.FC = () => {
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const location = useLocation()
+  const isSearchPage = location.pathname.includes('/search')
   const dispatch = useAppDispatch()
   const search = useAppSelector((state: RootState) => state.search)
 
@@ -31,28 +33,36 @@ const SearchBar: React.FC = () => {
     defaultValues: {
       destination:
         searchParams.get('destination') ||
-        (search.destination as string) ||
+        (!isSearchPage && (search.destination as string)) ||
         undefined,
       checkIn:
         (searchParams.get('checkIn')
           ? new Date(searchParams.get('checkIn') as string)
           : undefined) ||
-        (search.checkIn ? new Date(search.checkIn as string) : undefined),
+        (!isSearchPage && search.checkIn
+          ? new Date(search.checkIn as string)
+          : undefined),
       checkOut:
         (searchParams.get('checkOut')
           ? new Date(searchParams.get('checkOut') as string)
           : undefined) ||
-        (search.checkOut ? new Date(search.checkOut as string) : undefined),
+        (!isSearchPage && search.checkOut
+          ? new Date(search.checkOut as string)
+          : undefined),
       adultCount:
         (searchParams.get('adultCount')
           ? parseInt(searchParams.get('adultCount') as string)
           : undefined) ||
-        (search.adultCount ? parseInt(search.adultCount as string) : undefined),
+        (!isSearchPage && search.adultCount
+          ? parseInt(search.adultCount as string)
+          : undefined),
       childCount:
         (searchParams.get('childCount')
           ? parseInt(searchParams.get('childCount') as string)
           : undefined) ||
-        (search.childCount ? parseInt(search.childCount as string) : undefined),
+        (!isSearchPage && search.childCount
+          ? parseInt(search.childCount as string)
+          : undefined),
     },
   })
 
@@ -86,8 +96,15 @@ const SearchBar: React.FC = () => {
   const maxDate = new Date()
   maxDate.setFullYear(maxDate.getFullYear() + 1)
 
+  const handleReset = () => {
+    // Refresh the page
+    setSearchParams({})
+    dispatch(clearSearchState())
+    navigate(0)
+  }
+
   return (
-    <div className="custom-container items-center">
+    <div className="custom-container justify-center">
       <form
         onSubmit={onSearchFormSubmit}
         className="-mt-8 py-3 px-4 md:px-6 bg-neutral-50 rounded-md shadow-lg shadow-neutral-200 grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-6 items-center gap-3"
@@ -139,6 +156,13 @@ const SearchBar: React.FC = () => {
             <Controller
               control={control}
               name="checkIn"
+              rules={{
+                validate: (value) =>
+                  value
+                    ? value >= new Date() ||
+                      'Check-in date cannot be in the past'
+                    : true,
+              }}
               render={({ field }) => (
                 <DatePicker
                   selected={field.value}
@@ -180,13 +204,12 @@ const SearchBar: React.FC = () => {
             icon={FaMagnifyingGlass}
             isPureIconButton={true}
           />
-          {/* <Button
+          <Button
             type="reset"
             icon={FaArrowRotateLeft}
             isPureIconButton={true}
-            onClick={handleClear}
-          /> */}
-          {/* Deleted reset button */}
+            onClick={handleReset}
+          />
         </span>
       </form>
     </div>

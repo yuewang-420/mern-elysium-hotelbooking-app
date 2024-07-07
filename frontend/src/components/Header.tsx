@@ -64,8 +64,8 @@ const Header = () => {
       onClick: () => navigate('user/manage-account'),
     },
     {
-      name: 'Manage bookings',
-      onClick: () => navigate('manage-bookings'),
+      name: 'My bookings',
+      onClick: () => navigate('my-bookings'),
     },
     {
       name: 'Manage hotels',

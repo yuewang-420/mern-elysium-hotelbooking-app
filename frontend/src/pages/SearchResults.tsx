@@ -233,14 +233,6 @@ const SearchResults = () => {
                   search criteria.
                 </span>
                 <span className="self-start mt-4">
-                  {/* <Button
-                    icon={FaHome}
-                    onClick={() => {
-                      navigate('/')
-                    }}
-                  >
-                    Expore More Options in the Homepage
-                  </Button> */}
                   <Button
                     type="reset"
                     icon={FaArrowRotateLeft}

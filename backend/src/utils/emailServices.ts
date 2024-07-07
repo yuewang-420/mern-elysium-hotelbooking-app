@@ -90,3 +90,55 @@ export const sendResetPasswordEmail = async (
     throw new Error('Failed to send password reset email')
   }
 }
+
+export const sendFeedbackEmail = async (
+  firstName: string,
+  feedback: string,
+  email: string,
+  sendCopy: boolean
+): Promise<void> => {
+  try {
+    const templatePath = path.join(
+      __dirname,
+      'emailTemplates',
+      'feedbackTemplate.ejs'
+    )
+    const feedbackTemplate: string = await fs.promises.readFile(
+      templatePath,
+      'utf8'
+    )
+
+    const renderedTemplate = ejs.render(feedbackTemplate, {
+      name: firstName,
+      feedback,
+    })
+
+    // Send feedback to admin
+    const adminMailOptions = {
+      from: {
+        name: 'Elysium Official',
+        address: process.env.EMAIL_USERNAME as string,
+      },
+      to: process.env.EMAIL_USERNAME as string,
+      subject: `User Feedback from ${firstName}`,
+      html: renderedTemplate,
+    }
+
+    if (sendCopy) {
+      // Send a copy of feedback to the user
+      const userMailOptions = {
+        from: {
+          name: 'Elysium Official',
+          address: process.env.EMAIL_USERNAME as string,
+        },
+        to: email,
+        subject: 'Copy of Your Feedback',
+        html: renderedTemplate,
+      }
+
+      await transporter.sendMail(userMailOptions)
+    }
+  } catch (err) {
+    throw new Error('Failed to send feedback email')
+  }
+}

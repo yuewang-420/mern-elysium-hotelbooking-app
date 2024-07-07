@@ -7,11 +7,17 @@ import { FaRegHandPointRight } from 'react-icons/fa6'
 import { FaSignInAlt } from 'react-icons/fa'
 import { setSearchState } from '../slices/searchSlice'
 
+type ExcludeDateInterval = {
+  start: string
+  end: string
+}
+
 type BookNowFormProps = {
   hotelId: string
   pricePerNight: number
   maxAdultCount: number
   maxChildCount: number
+  excludeDateIntervals: ExcludeDateInterval[]
 }
 
 type GuestInfoFormData = {
@@ -26,12 +32,20 @@ const BookNowForm = ({
   pricePerNight,
   maxAdultCount,
   maxChildCount,
+  excludeDateIntervals,
 }: BookNowFormProps) => {
   const navigate = useNavigate()
   const location = useLocation()
   const userInfo = useAppSelector((state: RootState) => state.auth?.userInfo)
   const search = useAppSelector((state: RootState) => state.search)
   const dispatch = useAppDispatch()
+
+  const formattedExcludeDateIntervals = excludeDateIntervals.map(
+    (interval) => ({
+      start: new Date(interval.start), // Convert string to Date
+      end: new Date(interval.end), // Convert string to Date
+    })
+  )
 
   const {
     watch,
@@ -125,6 +139,14 @@ const BookNowForm = ({
               <Controller
                 control={control}
                 name="checkIn"
+                rules={{
+                  required: 'Check-in date is required',
+                  validate: (value) =>
+                    value
+                      ? value >= new Date() ||
+                        'Check-in date cannot be in the past'
+                      : true,
+                }}
                 render={({ field }) => (
                   <DatePicker
                     selected={field.value}
@@ -132,6 +154,7 @@ const BookNowForm = ({
                     selectsStart
                     startDate={checkIn}
                     endDate={checkOut}
+                    excludeDateIntervals={formattedExcludeDateIntervals}
                     minDate={minDate}
                     maxDate={checkOut}
                     placeholderText="Check-in Date"
@@ -145,6 +168,14 @@ const BookNowForm = ({
               <Controller
                 control={control}
                 name="checkOut"
+                rules={{
+                  required: 'Check-out date is required',
+                  validate: (value) =>
+                    value
+                      ? value > checkIn ||
+                        'Check-out date must be after check-in date'
+                      : true,
+                }}
                 render={({ field }) => (
                   <DatePicker
                     selected={field.value}
@@ -152,6 +183,7 @@ const BookNowForm = ({
                     selectsStart
                     startDate={checkIn}
                     endDate={checkOut}
+                    excludeDateIntervals={formattedExcludeDateIntervals}
                     minDate={checkIn}
                     maxDate={maxDate}
                     placeholderText="Check-out Date"
@@ -190,7 +222,13 @@ const BookNowForm = ({
                 })}
               />
             </label>
-            <label className="w-full text-sm md:text-base font-medium bg-white px-2 py-1 text-neutral-700 items-center flex">
+
+            <label
+              className={`${
+                maxChildCount !== 0 ? '' : 'invisible'
+              } w-full text-sm md:text-base font-medium bg-white px-2 py-1 text-neutral-700 items-center flex`}
+              aria-hidden={maxChildCount === 0 ? 'true' : 'false'}
+            >
               Child:
               <input
                 className="w-full p-1 focus:outline-none text-sm md:text-base font-medium text-neutral-700"

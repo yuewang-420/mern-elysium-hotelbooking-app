@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useAppSelector, RootState } from './store'
 import HotelDetail from './pages/HotelDetail'
 import HotelBooking from './pages/HotelBooking'
+import MyBookings from './pages/MyBookings'
 
 function App() {
   const userInfo = useAppSelector((state: RootState) => state.auth?.userInfo)
@@ -52,10 +53,7 @@ function App() {
             {userInfo && (
               <>
                 <Route path="manage-hotels/*" element={<ManageHotels />} />
-                <Route
-                  path="manage-bookings"
-                  element={<h1 className="custom-container">bookings</h1>}
-                />
+                <Route path="my-bookings" element={<MyBookings />} />
               </>
             )}
             <Route path="*" element={<NotFound />} />

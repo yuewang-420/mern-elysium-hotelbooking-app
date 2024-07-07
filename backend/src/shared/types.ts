@@ -1,3 +1,5 @@
+import { Schema } from 'mongoose'
+
 // TypeScript definition for the User object
 export type UserType = {
   _id: string
@@ -27,6 +29,20 @@ export type HotelType = {
   country: string
 }
 
+export type BookingType = {
+  _id: string
+  userId: string
+  firstName: string
+  lastName: string
+  email: string
+  adultCount: number
+  childCount: number
+  checkIn: Date
+  checkOut: Date
+  totalCost: number
+  hotel: Schema.Types.ObjectId
+}
+
 export type HotelSearchResponse = {
   data: HotelType[]
   pagination: {
@@ -34,4 +50,10 @@ export type HotelSearchResponse = {
     page: number
     pages: number
   }
+}
+
+export type PaymentIntentResponse = {
+  paymentIntentId: string
+  clientSecret: string
+  totalCost: number
 }

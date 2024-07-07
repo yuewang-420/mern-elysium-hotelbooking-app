@@ -6,7 +6,7 @@ import * as apiClient from '../api-client'
 import { useAppDispatch } from '../store'
 import { useNavigate } from 'react-router-dom'
 import { setCredentials } from '../slices/authSlice'
-import { app } from '../firebase'
+import { app } from '../globalInstance/firebase'
 import { toast } from 'react-toastify'
 import confetti from 'canvas-confetti'
 

@@ -42,6 +42,9 @@ const userRouteValidations: ValidationFunctions = {
   // Verify email, reset password
   token: check('token', 'A valid token is required.').notEmpty(),
   otp: check('otp', 'A valid otp is required.').isString().notEmpty(),
+  // Verify feedback fields
+  feedback: check('feedback', 'Feedback is required.').isString().notEmpty(),
+  sendCopy: check('sendCopy').isBoolean(),
 }
 
 const myHotelValidations: ValidationFunctions = {

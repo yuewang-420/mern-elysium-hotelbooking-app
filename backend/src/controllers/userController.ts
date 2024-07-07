@@ -8,7 +8,11 @@ import EmailToken from '../models/emailTokenModel'
 import generateOTP from '../utils/generateOTP'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import verifyToken from '../utils/verifyToken'
-import { sendVerifyEmail, sendResetPasswordEmail } from '../utils/emailServices'
+import {
+  sendVerifyEmail,
+  sendResetPasswordEmail,
+  sendFeedbackEmail,
+} from '../utils/emailServices'
 import bcrypt from 'bcryptjs'
 
 const userRoutesAllowedKeys: { [key: string]: { [key: string]: string[] } } = {
@@ -21,6 +25,7 @@ const userRoutesAllowedKeys: { [key: string]: { [key: string]: string[] } } = {
     '/auth': ['email', 'password'],
     '/auth/google': ['email', 'firstName', 'lastName'],
     '/logout': [],
+    '/feedback': ['feedback', 'sendCopy'],
   },
   GET: { '/profile': [] },
   PUT: {
@@ -57,9 +62,6 @@ export const registerUser = async (req: Request, res: Response) => {
     // Register the user, then save registration data to db
     user = new User(req.body)
     await user.save()
-
-    // // Assign token to cookie
-    // assignAuthToken(res, user._id)
 
     return res.status(201).json({
       message: 'Your registration form is submitted successfully.',
@@ -681,5 +683,37 @@ export const updateUserProfile = async (req: Request, res: Response) => {
     })
   } else {
     res.status(404).json({ message: 'User not found.' })
+  }
+}
+
+// @desc    Send feedback email
+// @route   PUT /api/users/feedback
+// @access  Private
+export const sendUserFeedbackEmail = async (req: Request, res: Response) => {
+  const { method, path } = req
+  const allowedKeys = userRoutesAllowedKeys[method][path] || []
+  const unmatchedFieldErrors = checkUnexpectedFields(req, allowedKeys)
+  if (unmatchedFieldErrors.length !== 0) {
+    return res.status(400).json({ message: unmatchedFieldErrors })
+  }
+  const validationErrors = await validateUserRouteFields(req, allowedKeys)
+  if (validationErrors.length !== 0) {
+    return res.status(400).json({ message: validationErrors })
+  }
+
+  const { feedback, sendCopy } = req.body
+  try {
+    const user = await User.findById(req.userId)
+    if (!user) {
+      return res.status(400).json({ message: 'User not found.' })
+    }
+    const { firstName, email } = user.toObject()
+
+    await sendFeedbackEmail(firstName, feedback, email, sendCopy)
+    return res.status(201).json({ message: 'Feedback sent successfully.' })
+  } catch (err: any) {
+    return res.status(500).json({
+      message: err.message || 'Something went wrong, please try again later...',
+    })
   }
 }

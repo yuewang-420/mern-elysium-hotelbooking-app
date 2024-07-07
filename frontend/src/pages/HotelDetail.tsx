@@ -13,7 +13,7 @@ const HotelDetail = () => {
   const navigate = useNavigate()
 
   const {
-    data: hotel,
+    data: hotelResponse,
     isFetching,
     isSuccess,
     isError,
@@ -31,7 +31,8 @@ const HotelDetail = () => {
     )
   }
 
-  if (isSuccess && hotel) {
+  if (isSuccess && hotelResponse) {
+    const { hotel, excludeDateIntervals } = hotelResponse
     return (
       <div className="custom-container flex flex-col my-4 gap-4">
         <div className="flex flex-col my-2">
@@ -85,7 +86,7 @@ const HotelDetail = () => {
             Facilities
           </h5>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 drop-shadow shadow-neutral-200">
-            {hotel.facilities.map((facility) => (
+            {hotel.facilities.map((facility: string) => (
               <Badge
                 key={`${hotel._id}_${facility}`}
                 bgColor={'bg-blue-600'}
@@ -112,6 +113,7 @@ const HotelDetail = () => {
               pricePerNight={hotel.pricePerNight}
               maxAdultCount={hotel.adultCount}
               maxChildCount={hotel.childCount}
+              excludeDateIntervals={excludeDateIntervals}
             />
           </div>
         </div>
@@ -124,7 +126,7 @@ const HotelDetail = () => {
     "Sorry, we can't find the hotel according to the hotel id you provided. You'll find a lot to explore in the search page."
   const buttonText = 'Back to Search Page'
   const onButtonClick = () => navigate('/search')
-  if (isError && !hotel) {
+  if (isError) {
     return (
       <NotFound
         mainText={mainText}

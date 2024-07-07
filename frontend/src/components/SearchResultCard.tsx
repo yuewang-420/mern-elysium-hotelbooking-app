@@ -19,12 +19,12 @@ const SearchResultCard = ({ hotel }: SearchResultCardprops) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[3fr_5fr] border border-neutral-300 rounded shadow shadow-neutral-200 px-3 py-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-[3fr_5fr] border border-neutral-300 rounded shadow bg-neutral-50 shadow-neutral-200 px-3 py-4 gap-4">
       <div className="h-48 md:h-64 items-center">
         <Carousel slides={hotel.imageUrls} />
       </div>
       <div className="flex flex-col flex-wrap">
-        <div className="flex flex-col gap-0.5 mb-4">
+        <div className="flex flex-col gap-0.5 mb-4 justify-start">
           <div className="flex flex-col gap-3 md:gap-0 md:flex-row md:justify-between md:items-center">
             <span className="flex items-center">
               {Array.from({ length: hotel.starRating }).map((_, index) => (
@@ -49,18 +49,17 @@ const SearchResultCard = ({ hotel }: SearchResultCardprops) => {
           </div>
           <Link
             to={`/detail/${hotel._id}`}
-            className="text-xl md:text-2xl font-bold text-neutral-800 cursor-pointer hover:opacity-25 hover: btn-transition"
+            className="self-start text-xl md:text-2xl font-bold text-neutral-800 cursor-pointer hover:opacity-25 hover: btn-transition"
           >
             {hotel.name}
           </Link>
-          <p className="text-xs text-wrap md:text-sm text-neutral-600 font-light tracking-tight">
+          <p className="self-start text-xs text-wrap md:text-sm text-neutral-600 font-light tracking-tight">
             Room {hotel.roomNumber}, {hotel.streetAddress}, {hotel.city},{' '}
             {hotel.country}
           </p>
         </div>
-        <div>
-          <div className="text-xs md:text-sm font-normal text-neutral-700 line-clamp-3 md:line-clamp-4 2xl:line-clamp-4">
-            {/* TODO: modify line height*/}
+        <div className="flex justify-start">
+          <div className="self-start text-start text-xs md:text-sm font-normal text-neutral-700 line-clamp-3 md:line-clamp-4 2xl:line-clamp-4">
             {hotel.description}
           </div>
         </div>

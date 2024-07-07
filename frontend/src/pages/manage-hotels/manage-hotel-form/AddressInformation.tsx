@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 import { useState, useEffect, useRef } from 'react'
-import { Loader } from '@googlemaps/js-api-loader'
+import loader from '../../../globalInstance/googleMapsLoader'
 import { ManageHotelFormData } from './ManageHotelForm'
 
 const AddressInformation = () => {
@@ -27,12 +27,6 @@ const AddressInformation = () => {
   }, [streetAddressWatch])
 
   useEffect(() => {
-    const loader = new Loader({
-      apiKey: import.meta.env.VITE_GOOGLE_PLACES_API_KEY,
-      version: 'weekly',
-      libraries: ['places'],
-    })
-
     loader.load().then(() => {
       if (window.google && window.google.maps) {
         setAutocompleteService(new google.maps.places.AutocompleteService())

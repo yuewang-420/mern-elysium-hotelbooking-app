@@ -113,7 +113,7 @@ const PersonalDetails = () => {
             </p>
             <label className="text-sm md:text-base font-medium text-neutral-700 flex-1 relative">
               Email
-              <p className="text-clip text-sm md:text-base border border-neutral-300 rounded w-full py-1 pl-8 pr-24 mt-1 select-none">
+              <p className="text-clip text-sm md:text-base bg-neutral-100 border border-neutral-300 rounded w-full py-1 pl-8 pr-24 mt-1 select-none">
                 <AiOutlineMail className="text-xl text-neutral-700 absolute top-1/2 transform translate-y-1 md:translate-y-1.5 left-2" />
                 {profileData.verified && (
                   <span className="absolute text-clip -translate-y-7 right-2 top-1/2 transform sm:translate-y-0">
