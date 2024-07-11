@@ -37,7 +37,7 @@ const SearchResultCard = ({ hotel }: SearchResultCardprops) => {
                 {hotel.type}
               </span>
             </span>
-            <p className="text-xs md:text-sm font-medium text-neutral-700">
+            <p className="self-start text-xs md:text-sm font-medium text-neutral-700">
               {`${hotel.adultCount} ${
                 hotel.adultCount > 1 ? 'adults' : 'adult'
               }`}
@@ -53,17 +53,16 @@ const SearchResultCard = ({ hotel }: SearchResultCardprops) => {
           >
             {hotel.name}
           </Link>
-          <p className="self-start text-xs text-wrap md:text-sm text-neutral-600 font-light tracking-tight">
+          <p className="self-start text-start text-xs text-wrap md:text-sm text-neutral-600 font-light tracking-tight">
             Room {hotel.roomNumber}, {hotel.streetAddress}, {hotel.city},{' '}
             {hotel.country}
           </p>
         </div>
-        <div className="flex justify-start">
-          <div className="self-start text-start text-xs md:text-sm font-normal text-neutral-700 line-clamp-3 md:line-clamp-4 2xl:line-clamp-4">
+        <div className="self-start flex justify-start">
+          <p className="self-start text-start text-xs text-wrap md:text-sm font-normal text-neutral-700 line-clamp-3 md:line-clamp-4 2xl:line-clamp-4">
             {hotel.description}
-          </div>
+          </p>
         </div>
-
         <div className="flex flex-col gap-2 sm:flex-row sm:justify-between mt-4 sm:mt-6 items-end sm:items-start whitespace-nowrap">
           <div className="flex basis-3/5 flex-col gap-1 items-start">
             <span className="w-full flex flex-wrap-reverse sm:flex-wrap gap-1 itemds-end self-end sm:self-start">
